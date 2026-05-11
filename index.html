@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>세우(주) 원자재 4종 일일 시세 리포트</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
 <style>
   :root {
     color-scheme: light;
@@ -46,38 +47,23 @@
     background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
     border-radius: 50%;
   }
-  .hero .eyebrow {
-    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-    opacity: .85; font-weight: 600; margin-bottom: 8px;
-  }
+  .hero .eyebrow { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: .85; font-weight: 600; margin-bottom: 8px; }
   .hero h1 { font-size: 26px; font-weight: 800; margin: 0 0 12px; line-height: 1.3; }
-  .hero .meta {
-    display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; opacity: .92;
-  }
+  .hero .meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; opacity: .92; }
 
   .headline {
     background: var(--card); border-radius: 14px; padding: 20px 24px;
-    margin-top: 20px; box-shadow: var(--shadow);
-    border-left: 5px solid var(--accent);
+    margin-top: 20px; box-shadow: var(--shadow); border-left: 5px solid var(--accent);
   }
-  .headline h2 {
-    margin: 0 0 6px; font-size: 13px; color: var(--accent);
-    letter-spacing: 1px; text-transform: uppercase;
-  }
+  .headline h2 { margin: 0 0 6px; font-size: 13px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
   .headline p { margin: 0; font-size: 15px; color: var(--ink-2); }
   .headline strong { color: var(--ink); font-weight: 700; }
 
   section { margin-top: 28px; }
-  h2.sec {
-    font-size: 20px; font-weight: 800; margin: 0 0 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
+  h2.sec { font-size: 20px; font-weight: 800; margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
   h2.sec .bar { width: 4px; height: 20px; background: var(--brand-2); border-radius: 2px; }
 
-  .kpi-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-  }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
   .kpi {
     background: var(--card); border-radius: 12px; padding: 18px;
     box-shadow: var(--shadow); border-top: 4px solid var(--brand-2);
@@ -93,10 +79,7 @@
   .kpi .deltas div { background: #f1f5f9; padding: 3px 7px; border-radius: 6px; }
   .kpi .deltas .neg { color: var(--buy); background: var(--buy-bg); }
   .kpi .deltas .pos { color: var(--hot); background: var(--hot-bg); }
-  .badge {
-    display: inline-block; padding: 4px 10px; border-radius: 999px;
-    font-size: 11px; font-weight: 700; letter-spacing: .3px;
-  }
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .3px; }
   .badge.buy { background: var(--buy-bg); color: var(--buy); }
   .badge.watch { background: var(--watch-bg); color: var(--watch); }
   .badge.hot { background: var(--hot-bg); color: var(--hot); }
@@ -108,10 +91,15 @@
   }
   .ref-strip strong { color: var(--ink); }
 
-  .detail {
-    background: var(--card); border-radius: 14px; padding: 22px 24px;
-    margin-top: 14px; box-shadow: var(--shadow);
-  }
+  /* CHART SECTION */
+  .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 14px; }
+  .chart-card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+  .chart-card h3 { margin: 0 0 4px; font-size: 14px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .chart-card .sub { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+  .chart-wrap { position: relative; height: 240px; }
+  @media (max-width: 640px) { .chart-grid { grid-template-columns: 1fr; } .chart-wrap { height: 220px; } }
+
+  .detail { background: var(--card); border-radius: 14px; padding: 22px 24px; margin-top: 14px; box-shadow: var(--shadow); }
   .detail h3 {
     margin: 0 0 14px; font-size: 16px; display: flex; align-items: center;
     gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
@@ -122,10 +110,7 @@
     color: white; font-size: 13px; display: inline-flex;
     align-items: center; justify-content: center; font-weight: 700;
   }
-  .detail h4 {
-    font-size: 12px; color: var(--brand); margin: 14px 0 6px;
-    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-  }
+  .detail h4 { font-size: 12px; color: var(--brand); margin: 14px 0 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
   .detail ul { margin: 6px 0; padding-left: 20px; }
   .detail li { margin-bottom: 5px; color: var(--ink-2); font-size: 14px; }
   .quote {
@@ -147,13 +132,8 @@
   tr:last-child td { border-bottom: none; }
   td.up { color: var(--hot); font-weight: 600; }
 
-  .fx-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px;
-  }
-  .fx {
-    background: var(--card); padding: 14px; border-radius: 10px;
-    box-shadow: var(--shadow); text-align: center;
-  }
+  .fx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .fx { background: var(--card); padding: 14px; border-radius: 10px; box-shadow: var(--shadow); text-align: center; }
   .fx .pair { font-size: 11px; color: var(--muted); font-weight: 600; }
   .fx .val { font-size: 18px; font-weight: 800; color: var(--ink); margin: 3px 0; }
   .fx .note { font-size: 10px; color: var(--muted); }
@@ -166,17 +146,9 @@
   .strategy h3 { margin: 0 0 10px; font-size: 16px; }
   .strategy p { margin: 8px 0; font-size: 14px; opacity: .95; line-height: 1.7; }
   .strategy strong { color: #ffd166; font-weight: 700; }
-  .priority {
-    background: rgba(255,255,255,.1); padding: 12px 16px;
-    border-radius: 9px; margin: 8px 0;
-    border-left: 3px solid #ffd166;
-  }
+  .priority { background: rgba(255,255,255,.1); padding: 12px 16px; border-radius: 9px; margin: 8px 0; border-left: 3px solid #ffd166; }
 
-  .sources {
-    background: var(--card); padding: 20px 24px; border-radius: 14px;
-    margin-top: 14px; box-shadow: var(--shadow);
-    font-size: 12px; color: var(--ink-2);
-  }
+  .sources { background: var(--card); padding: 20px 24px; border-radius: 14px; margin-top: 14px; box-shadow: var(--shadow); font-size: 12px; color: var(--ink-2); }
   .sources h3 { font-size: 13px; color: var(--brand); margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
   .sources ul { padding-left: 18px; }
   .sources a { color: var(--brand-2); text-decoration: none; }
@@ -188,6 +160,9 @@
     color: #9a3412; border: 1px dashed #fb923c;
   }
   .footnote strong { color: #7c2d12; }
+  .data-tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-left: 6px; font-weight: 700; }
+  .data-tag.real { background: #dcfce7; color: #16a34a; }
+  .data-tag.est { background: #fef9c3; color: #ca8a04; }
 </style>
 </head>
 <body>
@@ -219,9 +194,7 @@
         <div class="name">🇮🇳 인도산 SBM 48% Hipro</div>
         <div class="price">$470~485 <small>/MT</small></div>
         <div class="deltas">
-          <div class="neg">일 -0.5%</div>
-          <div class="neg">주 -1.5%</div>
-          <div class="neg">월 -3.5%</div>
+          <div class="neg">일 -0.5%</div><div class="neg">주 -1.5%</div><div class="neg">월 -3.5%</div>
         </div>
         <div><span class="badge buy">🟢 매수 (분할)</span></div>
       </div>
@@ -229,9 +202,7 @@
         <div class="name">🇫🇷 프랑스산 옥수수 (Bordeaux/Rouen)</div>
         <div class="price">$235~245 <small>/MT (€199~207)</small></div>
         <div class="deltas">
-          <div class="neg">일 -0.3%</div>
-          <div class="pos">주 +0.5%</div>
-          <div class="pos">월 +1.5%</div>
+          <div class="neg">일 -0.3%</div><div class="pos">주 +0.5%</div><div class="pos">월 +1.5%</div>
         </div>
         <div><span class="badge watch">🟡 관망</span></div>
       </div>
@@ -239,9 +210,7 @@
         <div class="name">🇺🇸 미국산 감자 (Russet Norkotah)</div>
         <div class="price">$390~460 <small>/MT (Frozen Fry급)</small></div>
         <div class="deltas">
-          <div>일 보합</div>
-          <div class="pos">주 +1%</div>
-          <div class="pos">월 +3%</div>
+          <div>일 보합</div><div class="pos">주 +1%</div><div class="pos">월 +3%</div>
         </div>
         <div><span class="badge watch">🟡 관망</span></div>
       </div>
@@ -249,9 +218,7 @@
         <div class="name">🇹🇭 태국산 타피오카 전분 (FOB Bangkok)</div>
         <div class="price">$580 <small>/MT (Native, 확정)</small></div>
         <div class="deltas">
-          <div class="pos">일 +1.8%</div>
-          <div class="pos">주 +2.7%</div>
-          <div class="pos">월 +10.5%</div>
+          <div class="pos">일 +1.8%</div><div class="pos">주 +2.7%</div><div class="pos">월 +10.5%</div>
         </div>
         <div><span class="badge hot">🔴 대기 매수 / 일부 선매</span></div>
       </div>
@@ -267,6 +234,39 @@
     </div>
   </section>
 
+  <!-- 📈 1년치 시세 추이 차트 -->
+  <section>
+    <h2 class="sec"><span class="bar"></span>📈 1년치 시세 추이 (2025-05 ~ 2026-05)</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>🇮🇳 인도산 SBM 48% Hipro <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (FOB Kandla/Mundra) · CBOT SBM + 인도 프리미엄 기준</div>
+        <div class="chart-wrap"><canvas id="chartSBM"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇫🇷 프랑스산 옥수수 (Maize) <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (FOB Bordeaux/Rouen) · MATIF Corn EUR 환산</div>
+        <div class="chart-wrap"><canvas id="chartCorn"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇺🇸 미국산 감자 (Russet) <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (Frozen Fry급 raw FOB equivalent) · USDA AMS 기반</div>
+        <div class="chart-wrap"><canvas id="chartPotato"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇹🇭 태국산 타피오카 전분 <span class="data-tag real">TTSA 실측</span></h3>
+        <div class="sub">단위: USD/MT (FOB Bangkok, Native) · TTSA 공식 주간 가격</div>
+        <div class="chart-wrap"><canvas id="chartTapioca"></canvas></div>
+      </div>
+    </div>
+    <div class="footnote">
+      📊 <strong>차트 데이터 안내:</strong> 타피오카는 TTSA 공식 주간 가격(2026-01~05) + 2025년 추정.
+      나머지 3종은 공개 벤치마크(CBOT, MATIF, USDA)와 52주 레인지를 기반으로 한 월평균 추정치에요.
+      <strong>매일 자동 누적되면서 점점 정확해져요</strong> — 30일 후부터는 실측 비중이 크게 늘어요.
+    </div>
+  </section>
+
+  <!-- 품목별 상세 -->
   <section>
     <h2 class="sec"><span class="bar"></span>품목별 상세 분석</h2>
 
@@ -281,15 +281,14 @@
       <h4>단기 추이 & 변동 요인</h4>
       <ul>
         <li>CBOT 일봉/시간봉/5시간봉 모두 <strong>Strong Sell</strong> — 단기 급락 압력</li>
-        <li>(-) USDA 발표: 2026년 미국 농가 대두 식부면적 확대</li>
+        <li>(-) USDA: 2026년 미국 농가 대두 식부면적 확대</li>
         <li>(-) 브라질→중국 통관 강화로 미국·인도산 반사이익 가능성</li>
         <li>(+) 이란 사태 여파로 사료비 인상 우려 (Morgan Stanley)</li>
       </ul>
       <div class="quote">
-        💬 <strong>세우(주) 구매 관점:</strong> 민수님, <strong>지금이 인도산 SBM 분할 매수의 좋은 창</strong>이에요.
-        CBOT 약세 + 인도 수출가 인하 압력이 동시에 작용 중. 6~7월 운임 강세 전,
-        <strong>전체 필요량의 30~40%를 이번 주 내 선매</strong>하시고, 나머지는 $460/MT 이탈 시 추가 매수.
-        6월 인도 South-West Monsoon은 매주 모니터링 필요해요.
+        💬 <strong>세우(주) 구매 관점:</strong> <strong>지금이 인도산 SBM 분할 매수의 좋은 창</strong>이에요.
+        CBOT 약세 + 인도 수출가 인하 압력 동시 작용. <strong>전체 필요량 30~40% 이번 주 선매</strong>,
+        나머지는 $460/MT 이탈 시 추가 매수. 6월 인도 South-West Monsoon 매주 모니터링 필요.
       </div>
     </div>
 
@@ -299,19 +298,17 @@
       <ul>
         <li><strong>€199~207/MT ≒ $235~245/MT</strong> 추정</li>
         <li>MATIF 옥수수 표준규격(Bayonne ex-silo, 50톤): €195~210/MT 박스권</li>
-        <li>11월물 forward는 €200대 중반 안착</li>
       </ul>
       <h4>단기 추이 & 변동 요인</h4>
       <ul>
         <li>3월 ZMP 마켓 어세스먼트: <strong>Mixed</strong> — Bullish/Bearish 균형</li>
         <li>(-) 캐나다·아르헨티나 식부 확대로 글로벌 공급 증가</li>
-        <li>(+) 이란발 에너지·비료가 상승으로 농가 비용 인상</li>
-        <li>(+) US Gulf vs MATIF 스프레드 좁혀지는 중 (유럽이 상대적으로 저렴)</li>
+        <li>(+) 이란발 에너지·비료가 상승, US Gulf vs MATIF 스프레드 축소 중</li>
       </ul>
       <div class="quote">
         💬 <strong>세우(주) 구매 관점:</strong> <strong>관망 권고</strong>.
-        €200 전후는 6개월 평균과 동일 수준. <strong>€195/MT 이탈 시 적극 매수</strong>,
-        €210/MT 돌파 시 11월물(신곡) 헷지 검토 양방향 시나리오. 흑해 옥수수가 $10~15/MT 더 싸지면 협상 카드 활용.
+        <strong>€195/MT 이탈 시 적극 매수</strong>, €210/MT 돌파 시 11월물(신곡) 헷지 검토.
+        흑해 옥수수가 $10~15/MT 더 싸지면 협상 카드 활용.
       </div>
     </div>
 
@@ -319,8 +316,7 @@
       <h3><span class="num">3</span> 🇺🇸 미국산 감자 (Russet Norkotah, Columbia Basin/Idaho)</h3>
       <h4>현재 시세 (USDA AMS 5월 보고서)</h4>
       <ul>
-        <li>Idaho U.S. One Russet Norkotah 50lb 카톤: <strong>$18~23/카톤</strong> (≒$795~1,015/MT 터미널)</li>
-        <li>도매 평균: $1.38~2.77/kg (Selina Wamucii)</li>
+        <li>Idaho U.S. One Russet Norkotah 50lb 카톤: <strong>$18~23/카톤</strong></li>
         <li>가공품 환산 (Frozen French Fry급): <strong>$390~460/MT (raw FOB equivalent)</strong></li>
       </ul>
       <h4>단기 추이 & 변동 요인</h4>
@@ -328,13 +324,11 @@
         <li><strong>보합~소폭 강세</strong>. 미 산업 신곡(new-crop) 전환기 진입</li>
         <li>(-) 신곡 출하 증가로 6~7월 추가 약세 가능성</li>
         <li>(+) 컬럼비아 분지·아이다호 강수량 정상화 → 작황 양호</li>
-        <li>(+) 일본·한국·필리핀 등 동아시아 수요 견조</li>
       </ul>
       <div class="quote">
         💬 <strong>세우(주) 구매 관점:</strong> <strong>관망</strong>.
-        5월 중순 신곡 출하 본격화 → 6~7월 추가 5~8% 하락 여지.
-        <strong>현재는 30~45일분 단기 계약</strong>만, 7월 신곡 본격 출하기에 4분기 본계약 협상 시작 권장.
-        Wisconsin 산지 견적도 병행 ($30~50/MT 저렴할 때 있음).
+        <strong>현재는 30~45일분 단기 계약</strong>만, 7월 신곡 본격 출하기에 4분기 본계약 협상 시작.
+        Wisconsin 산지 견적도 병행 ($30~50/MT 저렴).
       </div>
     </div>
 
@@ -356,17 +350,10 @@
           <tr><td><strong>05/05</strong></td><td><strong>17.90</strong></td><td><strong>$580</strong></td><td class="up"><strong>+$15</strong></td></tr>
         </tbody>
       </table>
-      <h4>변동 요인</h4>
-      <ul>
-        <li>(+) 태국 카사바 작황 부진 + 중국·인도네시아 수요 회복</li>
-        <li>(+) 베트남 타피오카 동반 상승 → 대체재 가격 우위 약화</li>
-        <li>(+) THB 강세(USD/THB 32.23) → USD 환산 추가 상승 압력</li>
-        <li>(-) Modified Starch는 Native 대비 $40~80/MT 프리미엄 유지</li>
-      </ul>
       <div class="quote">
         💬 <strong>세우(주) 구매 관점:</strong> 🔴 <strong>가장 강한 매수 시그널</strong>.
-        5주 연속 누적 +$55/MT (+10.5%). <strong>3분기 필요량 50~60%를 이번 주 선매</strong> 강력 권고.
-        Modified 등급 사용 라인은 더 빨리 락인 필요. $600/MT 돌파 시 베트남 견적 병행으로 협상 레버리지 확보.
+        5주 연속 누적 +$55/MT (+10.5%). <strong>3분기 필요량 50~60% 이번 주 선매</strong> 강력 권고.
+        Modified 등급 라인은 더 빨리 락인. $600/MT 돌파 시 베트남 견적 병행 권장.
       </div>
     </div>
   </section>
@@ -374,30 +361,14 @@
   <section>
     <h2 class="sec"><span class="bar"></span>환율 & 운임 (2026-05-08)</h2>
     <div class="fx-grid">
-      <div class="fx">
-        <div class="pair">USD / KRW</div>
-        <div class="val">₩1,461.40</div>
-        <div class="note">수입 환산 기준 (4월말 +0.4%)</div>
-      </div>
-      <div class="fx">
-        <div class="pair">USD / INR</div>
-        <div class="val">₹94.40</div>
-        <div class="note">INR 약세 → 인도 수출가 인하</div>
-      </div>
-      <div class="fx">
-        <div class="pair">EUR / USD</div>
-        <div class="val">1.1774</div>
-        <div class="note">EUR 강세 → FOB USD 가격 상승</div>
-      </div>
-      <div class="fx">
-        <div class="pair">USD / THB</div>
-        <div class="val">฿32.23</div>
-        <div class="note">THB 강세 → 타피오카 추가 상승</div>
-      </div>
+      <div class="fx"><div class="pair">USD / KRW</div><div class="val">₩1,461.40</div><div class="note">수입 환산 기준 (4월말 +0.4%)</div></div>
+      <div class="fx"><div class="pair">USD / INR</div><div class="val">₹94.40</div><div class="note">INR 약세 → 인도 수출가 인하</div></div>
+      <div class="fx"><div class="pair">EUR / USD</div><div class="val">1.1774</div><div class="note">EUR 강세 → FOB USD 가격 상승</div></div>
+      <div class="fx"><div class="pair">USD / THB</div><div class="val">฿32.23</div><div class="note">THB 강세 → 타피오카 추가 상승</div></div>
     </div>
     <div class="footnote">
       ⚠️ <strong>BDI 건화물 운임지수</strong>는 직접 데이터 접근 제한.
-      5월 들어 케이프사이즈/파나막스 견조한 흐름이라 <strong>6~7월 운임 인상 가능성 高</strong> — 매수 타이밍 앞당기는 보조 근거.
+      5월 들어 케이프사이즈/파나막스 견조한 흐름이라 <strong>6~7월 운임 인상 가능성 高</strong>.
     </div>
   </section>
 
@@ -407,20 +378,20 @@
       <p>이번 주는 <strong>품목별로 매수 강도를 차별화</strong>해야 하는 한 주.</p>
       <div class="priority">
         <h3>🔴 우선순위 1 (즉시) — 타피오카 전분</h3>
-        <p>5주 연속 강세, 6월 신곡 전 추가 상승 여력. 3분기 필요량 <strong>50~60% 선매 락인</strong> 5/16 금요일까지 마무리.</p>
+        <p>5주 연속 강세. 3분기 필요량 <strong>50~60% 선매 락인</strong> 5/16 금요일까지.</p>
       </div>
       <div class="priority">
         <h3>🟢 우선순위 2 (분할) — 인도산 SBM</h3>
-        <p>CBOT 약세 + 인도-미국 무역협정 진전. 필요량 <strong>30~40% 이번 주, 나머지 $460/MT 이탈 시 추가</strong>.</p>
+        <p>CBOT 약세 + 인도-미국 무역협정 진전. <strong>30~40% 이번 주, 나머지 $460/MT 이탈 시</strong>.</p>
       </div>
       <div class="priority">
         <h3>🟡 우선순위 3 (관망) — 옥수수 / 감자</h3>
-        <p>박스권 또는 신곡 대기. <strong>최소 필요량(30~45일분) 단기 계약</strong>. 옥수수는 €195/MT 이탈, 감자는 7월 신곡 출하기 트리거.</p>
+        <p>박스권 또는 신곡 대기. <strong>최소 필요량 단기 계약</strong>만.</p>
       </div>
       <h3 style="margin-top:16px;">📌 다음 주 리스크 모니터링</h3>
       <p>
         • 6월 인도 South-West Monsoon (SBM)<br>
-        • <strong>5/16 USDA WASDE 리포트</strong> (옥수수·SBM)<br>
+        • <strong>5/16 USDA WASDE 리포트</strong><br>
         • 태국 카사바 신곡 수확 (TTSA 매주 화요일)<br>
         • BDI 케이프/파나막스 일일 변동
       </p>
@@ -436,22 +407,4 @@
       <ul>
         <li><a href="https://www.investing.com/commodities/us-soybean-meal" target="_blank">CBOT US Soybean Meal Futures (Investing.com)</a></li>
         <li><a href="https://dir.tridge.com/prices/soybean-meal/IN" target="_blank">Soybean Meal Price in India (Tridge)</a></li>
-        <li><a href="https://www.sopa.org/fas-fob-monthly-average-rates-for-soybean-meal/" target="_blank">SOPA FAS (FOB) Monthly Rates</a></li>
-        <li><a href="https://www.zmp.de/en/futures/grain/matif-corn-paris-fr-future" target="_blank">MATIF Corn (ZMP Live)</a></li>
-        <li><a href="https://www.ams.usda.gov/mnreports/fvdidnop.pdf" target="_blank">USDA National Potato Report</a></li>
-        <li><a href="https://www.selinawamucii.com/insights/prices/united-states-of-america/potatoes/" target="_blank">Selina Wamucii — US Potato Prices</a></li>
-        <li><a href="https://www.thaitapiocastarch.org/en/information/statistics/weekly_tapioca_starch_price" target="_blank">TTSA Weekly Tapioca Starch Price</a></li>
-        <li><a href="https://www.xe.com/currencytables/?from=USD" target="_blank">XE Historical Currency Rates</a></li>
-        <li><a href="https://www.balticexchange.com/" target="_blank">Baltic Exchange (BDI)</a></li>
-      </ul>
-    </div>
-    <div class="footnote">
-      📝 <strong>데이터 신뢰도:</strong> TTSA 타피오카·CBOT SBM·XE 환율은 직접 확인된 실측값.
-      인도 SBM·프랑스 옥수수·미국 감자 가공품 환산가는 공개 벤치마크와 직전 흐름 기반 추정 (±5% 오차 가능).
-      본격 발주 전 SGS·Bunge·COFCO 등 트레이더 견적과 교차 검증 권장.
-    </div>
-  </section>
-
-</div>
-</body>
-</html>
+        <li><a href="https://www.sopa.org/fas-fob-monthly-average-rates-for-soybean-meal/" target="_blank">SOPA FAS (FOB) Monthly Rates</a><
