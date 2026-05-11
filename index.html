@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>세우(주) 원자재 4종 일일 시세 리포트</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<!-- Chart.js 제거: 외부 CDN 차단 환경에서도 작동하도록 inline SVG로 대체 -->
 <style>
   :root {
     color-scheme: light;
@@ -241,22 +241,22 @@
       <div class="chart-card">
         <h3>🇮🇳 인도산 SBM 48% Hipro <span class="data-tag est">월평균 추정</span></h3>
         <div class="sub">단위: USD/MT (FOB Kandla/Mundra) · CBOT SBM + 인도 프리미엄 기준</div>
-        <div class="chart-wrap"><canvas id="chartSBM"></canvas></div>
+        <div class="chart-wrap" id="chartSBM"></div>
       </div>
       <div class="chart-card">
         <h3>🇫🇷 프랑스산 옥수수 (Maize) <span class="data-tag est">월평균 추정</span></h3>
         <div class="sub">단위: USD/MT (FOB Bordeaux/Rouen) · MATIF Corn EUR 환산</div>
-        <div class="chart-wrap"><canvas id="chartCorn"></canvas></div>
+        <div class="chart-wrap" id="chartCorn"></div>
       </div>
       <div class="chart-card">
         <h3>🇺🇸 미국산 감자 (Russet) <span class="data-tag est">월평균 추정</span></h3>
         <div class="sub">단위: USD/MT (Frozen Fry급 raw FOB equivalent) · USDA AMS 기반</div>
-        <div class="chart-wrap"><canvas id="chartPotato"></canvas></div>
+        <div class="chart-wrap" id="chartPotato"></div>
       </div>
       <div class="chart-card">
         <h3>🇹🇭 태국산 타피오카 전분 <span class="data-tag real">TTSA 실측</span></h3>
         <div class="sub">단위: USD/MT (FOB Bangkok, Native) · TTSA 공식 주간 가격</div>
-        <div class="chart-wrap"><canvas id="chartTapioca"></canvas></div>
+        <div class="chart-wrap" id="chartTapioca"></div>
       </div>
     </div>
     <div class="footnote">
@@ -408,4 +408,4 @@
         <li><a href="https://www.investing.com/commodities/us-soybean-meal" target="_blank">CBOT US Soybean Meal Futures (Investing.com)</a></li>
         <li><a href="https://dir.tridge.com/prices/soybean-meal/IN" target="_blank">Soybean Meal Price in India (Tridge)</a></li>
         <li><a href="https://www.sopa.org/fas-fob-monthly-average-rates-for-soybean-meal/" target="_blank">SOPA FAS (FOB) Monthly Rates</a></li>
- 
+        <li><a href="https://www.zmp.de/en/futures/grain/m
