@@ -1,26 +1,265 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><title>2026-05-11 리포트 (보관 중)</title>
-<style>body{font-family:-apple-system,sans-serif;max-width:680px;margin:60px auto;padding:0 20px;color:#1f2937;line-height:1.7}
-h1{color:#1e3a5f;border-bottom:3px solid #2563eb;padding-bottom:10px}
-.box{background:#fef3c7;border-left:4px solid #d97706;padding:16px 20px;border-radius:0 8px 8px 0;margin:20px 0}
-a{color:#2563eb;font-weight:600;text-decoration:none}
-a:hover{text-decoration:underline}
-.nav{background:#f1f5f9;padding:12px 16px;border-radius:8px;margin-bottom:20px}</style></head>
-<body>
-<div class="nav"><a href="../index.html">← 오늘 리포트로 돌아가기</a> &nbsp;|&nbsp; <a href="./index.html">전체 아카이브</a></div>
-<h1>📅 2026-05-11 세우(주) 원자재 리포트</h1>
-<div class="box">
-  <b>📦 보관 중인 리포트예요.</b><br>
-  2026-05-11자 리포트는 자동 백업 시스템 도입 이전이라 스냅샷이 별도로 저장되어 있지 않아요.
-  <br><br>
-  대신 다음 자료로 해당 시점 시세를 확인할 수 있어요:
-  <ul>
-    <li><a href="https://www.investing.com/commodities/us-soybean-meal-historical-data" target="_blank">CBOT SBM Historical</a> — 일별 종가 조회</li>
-    <li><a href="https://www.thaitapiocastarch.org/en/information/statistics/weekly_tapioca_starch_price" target="_blank">TTSA 주간 시세</a> — 매주 화요일 갱신</li>
-    <li><a href="https://sopa.org/statistics/" target="_blank">SOPA 통계 아카이브</a></li>
-    <li><a href="https://www.barchart.com/futures/quotes/XBQ10/futures-prices" target="_blank">MATIF Corn 과거 시세</a></li>
-    <li><a href="https://www.investing.com/currencies/usd-krw-historical-data" target="_blank">USD/KRW 과거</a></li>
-  </ul>
-  <b>📌 2026-05-14 이후 발행분부터 매일 자동 스냅샷이 archive 폴더에 누적됩니다.</b>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세우(주) 원자재 4종 일일 시세 리포트</title>
+<style>
+  :root { color-scheme: light; --bg:#f5f7fb; --card:#fff; --ink:#14213d; --ink-2:#4a5568; --muted:#718096; --line:#e2e8f0; --brand:#0a4d68; --brand-2:#088395; --accent:#ff7e1d; --buy:#16a34a; --buy-bg:#dcfce7; --watch:#ca8a04; --watch-bg:#fef9c3; --hot:#dc2626; --hot-bg:#fee2e2; --shadow:0 1px 3px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06); }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .page{max-width:1080px;margin:0 auto;padding:24px 18px 60px}
+  .hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-2) 100%);color:#fff;border-radius:18px;padding:28px 32px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);border-radius:50%}
+  .hero .eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:600;margin-bottom:8px}
+  .hero h1{font-size:26px;font-weight:800;margin:0 0 12px;line-height:1.3}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;opacity:.92}
+  .headline{background:var(--card);border-radius:14px;padding:20px 24px;margin-top:20px;box-shadow:var(--shadow);border-left:5px solid var(--accent)}
+  .headline h2{margin:0 0 6px;font-size:13px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+  .headline p{margin:0;font-size:15px;color:var(--ink-2)} .headline strong{color:var(--ink);font-weight:700}
+  section{margin-top:28px}
+  h2.sec{font-size:20px;font-weight:800;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+  h2.sec .bar{width:4px;height:20px;background:var(--brand-2);border-radius:2px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .kpi{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);border-top:4px solid var(--brand-2);display:flex;flex-direction:column;gap:8px}
+  .kpi.buy{border-top-color:var(--buy)} .kpi.watch{border-top-color:var(--watch)} .kpi.hot{border-top-color:var(--hot)}
+  .kpi .name{font-size:13px;color:var(--muted);font-weight:600}
+  .kpi .price{font-size:20px;font-weight:800;color:var(--ink)}
+  .kpi .price small{font-size:11px;color:var(--muted);font-weight:500}
+  .kpi .deltas{display:flex;gap:6px;font-size:11px;color:var(--ink-2);flex-wrap:wrap}
+  .kpi .deltas div{background:#f1f5f9;padding:3px 7px;border-radius:6px}
+  .kpi .deltas .neg{color:var(--buy);background:var(--buy-bg)}
+  .kpi .deltas .pos{color:var(--hot);background:var(--hot-bg)}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px}
+  .badge.buy{background:var(--buy-bg);color:var(--buy)}
+  .badge.watch{background:var(--watch-bg);color:var(--watch)}
+  .badge.hot{background:var(--hot-bg);color:var(--hot)}
+  .ref-strip{margin-top:12px;background:var(--card);padding:12px 18px;border-radius:10px;display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--ink-2);box-shadow:var(--shadow)}
+  .ref-strip strong{color:var(--ink)}
+  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:14px}
+  .chart-card{background:var(--card);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+  .chart-card h3{margin:0 0 4px;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .chart-card .sub{font-size:11px;color:var(--muted);margin-bottom:12px}
+  .chart-wrap{position:relative;width:100%;min-height:240px}
+  @media (max-width:640px){.chart-grid{grid-template-columns:1fr}}
+  .detail{background:var(--card);border-radius:14px;padding:22px 24px;margin-top:14px;box-shadow:var(--shadow)}
+  .detail h3{margin:0 0 14px;font-size:16px;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .detail h3 .num{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;font-size:13px;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+  .detail h4{font-size:12px;color:var(--brand);margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+  .detail ul{margin:6px 0;padding-left:20px}
+  .detail li{margin-bottom:5px;color:var(--ink-2);font-size:14px}
+  .quote{background:linear-gradient(135deg,#fff7ed,#fef9c3);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 10px 10px 0;margin-top:12px;color:var(--ink-2);font-size:14px}
+  .quote strong{color:var(--ink)}
+  table{width:100%;border-collapse:separate;border-spacing:0;margin:10px 0;font-size:13px;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#f8fafc;color:var(--ink);font-weight:700;font-size:12px}
+  tr:last-child td{border-bottom:none}
+  td.up{color:var(--hot);font-weight:600}
+  .fx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+  .fx{background:var(--card);padding:14px;border-radius:10px;box-shadow:var(--shadow);text-align:center}
+  .fx .pair{font-size:11px;color:var(--muted);font-weight:600}
+  .fx .val{font-size:18px;font-weight:800;color:var(--ink);margin:3px 0}
+  .fx .note{font-size:10px;color:var(--muted)}
+  .strategy{background:linear-gradient(135deg,#0a4d68 0%,#088395 100%);color:#fff;border-radius:14px;padding:24px 28px;margin-top:14px;box-shadow:var(--shadow)}
+  .strategy h3{margin:0 0 10px;font-size:16px}
+  .strategy p{margin:8px 0;font-size:14px;opacity:.95;line-height:1.7}
+  .strategy strong{color:#ffd166;font-weight:700}
+  .priority{background:rgba(255,255,255,.1);padding:12px 16px;border-radius:9px;margin:8px 0;border-left:3px solid #ffd166}
+  .sources{background:var(--card);padding:20px 24px;border-radius:14px;margin-top:14px;box-shadow:var(--shadow);font-size:12px;color:var(--ink-2)}
+  .sources h3{font-size:13px;color:var(--brand);margin-top:0;text-transform:uppercase;letter-spacing:1px}
+  .sources ul{padding-left:18px}
+  .sources a{color:var(--brand-2);text-decoration:none}
+  .sources a:hover{text-decoration:underline}
+  .footnote{margin-top:16px;padding:14px 18px;background:#fff7ed;border-radius:10px;font-size:12px;color:#9a3412;border:1px dashed #fb923c}
+  .footnote strong{color:#7c2d12}
+  .data-tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-left:6px;font-weight:700}
+  .data-tag.real{background:#dcfce7;color:#16a34a}
+  .data-tag.est{background:#fef9c3;color:#ca8a04}
+  svg{width:100%;height:240px;display:block}
+</style>
+</head>
+<body><div style="background:#f1f5f9;padding:12px 16px;margin:0 0 16px 0;font-size:13px;border-bottom:1px solid #e5e7eb;">
+<a href="../index.html" style="color:#2563eb;font-weight:600;text-decoration:none">← 오늘 리포트로</a> &nbsp;|&nbsp;
+<a href="./index.html" style="color:#2563eb;font-weight:600;text-decoration:none">📚 아카이브 전체</a> &nbsp;|&nbsp;
+<span style="color:#6b7280">📸 2026-05-11 스냅샷 (보관)</span>
 </div>
-</body></html>
+<div class="page">
+  <header class="hero">
+    <div class="eyebrow">Daily Raw Materials Report</div>
+    <h1>📊 세우(주) 원자재 4종 일일 시세 리포트</h1>
+    <div class="meta">
+      <span>📅 <strong>2026-05-11 (월)</strong></span>
+      <span>📊 데이터 기준: 2026-05-08 종가</span>
+      <span>👤 구매팀 민수님</span>
+    </div>
+  </header>
+
+  <div class="headline">
+    <h2>🔔 오늘의 헤드라인</h2>
+    <p><strong>타피오카 전분이 5주 연속 강세(+10.5%/월)</strong>로 가장 뚜렷한 상승 시그널. 반대로 <strong>CBOT SBM 선물은 약세 모멘텀</strong>으로 인도산 SBM 매수 창이 열렸어요. <strong>SBM은 매수, 타피오카는 분할 선매</strong>가 오늘의 핵심.</p>
+  </div>
+
+  <section>
+    <h2 class="sec"><span class="bar"></span>KPI 요약 (FOB / USD/MT)</h2>
+    <div class="kpi-grid">
+      <div class="kpi buy">
+        <div class="name">🇮🇳 인도산 SBM 48% Hipro</div>
+        <div class="price">$470~485 <small>/MT</small></div>
+        <div class="deltas"><div class="neg">일 -0.5%</div><div class="neg">주 -1.5%</div><div class="neg">월 -3.5%</div></div>
+        <div><span class="badge buy">🟢 매수 (분할)</span></div>
+      </div>
+      <div class="kpi watch">
+        <div class="name">🇫🇷 프랑스산 옥수수 (Bordeaux/Rouen)</div>
+        <div class="price">$235~245 <small>/MT (€199~207)</small></div>
+        <div class="deltas"><div class="neg">일 -0.3%</div><div class="pos">주 +0.5%</div><div class="pos">월 +1.5%</div></div>
+        <div><span class="badge watch">🟡 관망</span></div>
+      </div>
+      <div class="kpi watch">
+        <div class="name">🇺🇸 미국산 감자 (Russet Norkotah)</div>
+        <div class="price">$390~460 <small>/MT (Frozen Fry급)</small></div>
+        <div class="deltas"><div>일 보합</div><div class="pos">주 +1%</div><div class="pos">월 +3%</div></div>
+        <div><span class="badge watch">🟡 관망</span></div>
+      </div>
+      <div class="kpi hot">
+        <div class="name">🇹🇭 태국산 타피오카 전분 (FOB Bangkok)</div>
+        <div class="price">$580 <small>/MT (Native)</small></div>
+        <div class="deltas"><div class="pos">일 +1.8%</div><div class="pos">주 +2.7%</div><div class="pos">월 +10.5%</div></div>
+        <div><span class="badge hot">🔴 대기 매수 / 일부 선매</span></div>
+      </div>
+    </div>
+    <div class="ref-strip">
+      <span><strong>참고지표 →</strong></span>
+      <span>CBOT SBM 5월물: <strong>$314.75</strong>/short ton</span>
+      <span>USD/KRW: <strong>₩1,461.40</strong></span>
+      <span>EUR/USD: <strong>1.1774</strong></span>
+      <span>USD/INR: <strong>₹94.40</strong></span>
+      <span>USD/THB: <strong>฿32.23</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="bar"></span>📈 1년치 시세 추이 (2025-05 ~ 2026-05)</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>🇮🇳 인도산 SBM 48% Hipro <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (FOB Kandla/Mundra)</div>
+        <div class="chart-wrap"><svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:240px;display:block;"><line x1="42" y1="208.0" x2="448" y2="208.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="211.0" text-anchor="end" font-size="10" fill="#94a3b8">$465</text><line x1="42" y1="159.8" x2="448" y2="159.8" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="162.8" text-anchor="end" font-size="10" fill="#94a3b8">$488</text><line x1="42" y1="111.5" x2="448" y2="111.5" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="114.5" text-anchor="end" font-size="10" fill="#94a3b8">$510</text><line x1="42" y1="63.2" x2="448" y2="63.2" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="66.2" text-anchor="end" font-size="10" fill="#94a3b8">$532</text><line x1="42" y1="15.0" x2="448" y2="15.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="18.0" text-anchor="end" font-size="10" fill="#94a3b8">$555</text><path d="M42.0,111.5 L75.8,90.1 L109.7,57.9 L143.5,36.4 L177.3,68.6 L211.2,100.8 L245.0,132.9 L278.8,143.7 L312.7,154.4 L346.5,158.7 L380.3,165.1 L414.2,175.8 L448.0,180.1 L448.0,208.0 L42.0,208.0 Z" fill="#16a34a" fill-opacity="0.10"/><path d="M42.0,111.5 L75.8,90.1 L109.7,57.9 L143.5,36.4 L177.3,68.6 L211.2,100.8 L245.0,132.9 L278.8,143.7 L312.7,154.4 L346.5,158.7 L380.3,165.1 L414.2,175.8 L448.0,180.1" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42.0" cy="111.5" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="75.8" cy="90.1" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="109.7" cy="57.9" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="143.5" cy="36.4" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="177.3" cy="68.6" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="211.2" cy="100.8" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="245.0" cy="132.9" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="278.8" cy="143.7" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="312.7" cy="154.4" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="346.5" cy="158.7" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="380.3" cy="165.1" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="414.2" cy="175.8" r="3" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="448.0" cy="180.1" r="4.5" fill="#16a34a" stroke="#fff" stroke-width="2.5"/><text x="440.0" y="170.1" text-anchor="end" font-size="11" font-weight="700" fill="#16a34a">$478</text><text x="42.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.05</text><text x="109.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.07</text><text x="177.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.09</text><text x="245.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.11</text><text x="312.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.01</text><text x="380.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.03</text><text x="448.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.05</text></svg></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇫🇷 프랑스산 옥수수 <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (FOB Bordeaux/Rouen)</div>
+        <div class="chart-wrap"><svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:240px;display:block;"><line x1="42" y1="208.0" x2="448" y2="208.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="211.0" text-anchor="end" font-size="10" fill="#94a3b8">$215</text><line x1="42" y1="159.8" x2="448" y2="159.8" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="162.8" text-anchor="end" font-size="10" fill="#94a3b8">$222</text><line x1="42" y1="111.5" x2="448" y2="111.5" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="114.5" text-anchor="end" font-size="10" fill="#94a3b8">$230</text><line x1="42" y1="63.2" x2="448" y2="63.2" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="66.2" text-anchor="end" font-size="10" fill="#94a3b8">$238</text><line x1="42" y1="15.0" x2="448" y2="15.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="18.0" text-anchor="end" font-size="10" fill="#94a3b8">$245</text><path d="M42.0,143.7 L75.8,163.0 L109.7,188.7 L143.5,175.8 L177.3,143.7 L211.2,124.4 L245.0,98.6 L278.8,79.3 L312.7,92.2 L346.5,111.5 L380.3,85.8 L414.2,60.0 L448.0,47.2 L448.0,208.0 L42.0,208.0 Z" fill="#ca8a04" fill-opacity="0.10"/><path d="M42.0,143.7 L75.8,163.0 L109.7,188.7 L143.5,175.8 L177.3,143.7 L211.2,124.4 L245.0,98.6 L278.8,79.3 L312.7,92.2 L346.5,111.5 L380.3,85.8 L414.2,60.0 L448.0,47.2" fill="none" stroke="#ca8a04" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42.0" cy="143.7" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="75.8" cy="163.0" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="109.7" cy="188.7" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="143.5" cy="175.8" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="177.3" cy="143.7" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="211.2" cy="124.4" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="245.0" cy="98.6" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="278.8" cy="79.3" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="312.7" cy="92.2" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="346.5" cy="111.5" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="380.3" cy="85.8" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="414.2" cy="60.0" r="3" fill="#ca8a04" stroke="#fff" stroke-width="1.5"/><circle cx="448.0" cy="47.2" r="4.5" fill="#ca8a04" stroke="#fff" stroke-width="2.5"/><text x="440.0" y="37.2" text-anchor="end" font-size="11" font-weight="700" fill="#ca8a04">$240</text><text x="42.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.05</text><text x="109.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.07</text><text x="177.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.09</text><text x="245.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.11</text><text x="312.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.01</text><text x="380.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.03</text><text x="448.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.05</text></svg></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇺🇸 미국산 감자 (Russet) <span class="data-tag est">월평균 추정</span></h3>
+        <div class="sub">단위: USD/MT (Frozen Fry급 raw FOB equivalent)</div>
+        <div class="chart-wrap"><svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:240px;display:block;"><line x1="42" y1="208.0" x2="448" y2="208.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="211.0" text-anchor="end" font-size="10" fill="#94a3b8">$370</text><line x1="42" y1="159.8" x2="448" y2="159.8" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="162.8" text-anchor="end" font-size="10" fill="#94a3b8">$390</text><line x1="42" y1="111.5" x2="448" y2="111.5" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="114.5" text-anchor="end" font-size="10" fill="#94a3b8">$410</text><line x1="42" y1="63.2" x2="448" y2="63.2" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="66.2" text-anchor="end" font-size="10" fill="#94a3b8">$430</text><line x1="42" y1="15.0" x2="448" y2="15.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="18.0" text-anchor="end" font-size="10" fill="#94a3b8">$450</text><path d="M42.0,183.9 L75.8,147.7 L109.7,111.5 L143.5,75.3 L177.3,39.1 L211.2,63.2 L245.0,99.4 L278.8,123.6 L312.7,111.5 L346.5,87.4 L380.3,63.2 L414.2,75.3 L448.0,75.3 L448.0,208.0 L42.0,208.0 Z" fill="#0891b2" fill-opacity="0.10"/><path d="M42.0,183.9 L75.8,147.7 L109.7,111.5 L143.5,75.3 L177.3,39.1 L211.2,63.2 L245.0,99.4 L278.8,123.6 L312.7,111.5 L346.5,87.4 L380.3,63.2 L414.2,75.3 L448.0,75.3" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42.0" cy="183.9" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="75.8" cy="147.7" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="109.7" cy="111.5" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="143.5" cy="75.3" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="177.3" cy="39.1" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="211.2" cy="63.2" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="245.0" cy="99.4" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="278.8" cy="123.6" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="312.7" cy="111.5" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="346.5" cy="87.4" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="380.3" cy="63.2" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="414.2" cy="75.3" r="3" fill="#0891b2" stroke="#fff" stroke-width="1.5"/><circle cx="448.0" cy="75.3" r="4.5" fill="#0891b2" stroke="#fff" stroke-width="2.5"/><text x="440.0" y="65.3" text-anchor="end" font-size="11" font-weight="700" fill="#0891b2">$425</text><text x="42.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.05</text><text x="109.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.07</text><text x="177.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.09</text><text x="245.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.11</text><text x="312.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.01</text><text x="380.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.03</text><text x="448.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.05</text></svg></div>
+      </div>
+      <div class="chart-card">
+        <h3>🇹🇭 태국산 타피오카 전분 <span class="data-tag real">TTSA 실측</span></h3>
+        <div class="sub">단위: USD/MT (FOB Bangkok, Native)</div>
+        <div class="chart-wrap"><svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:240px;display:block;"><line x1="42" y1="208.0" x2="448" y2="208.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="211.0" text-anchor="end" font-size="10" fill="#94a3b8">$425</text><line x1="42" y1="159.8" x2="448" y2="159.8" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="162.8" text-anchor="end" font-size="10" fill="#94a3b8">$469</text><line x1="42" y1="111.5" x2="448" y2="111.5" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="114.5" text-anchor="end" font-size="10" fill="#94a3b8">$512</text><line x1="42" y1="63.2" x2="448" y2="63.2" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="66.2" text-anchor="end" font-size="10" fill="#94a3b8">$556</text><line x1="42" y1="15.0" x2="448" y2="15.0" stroke="#f1f5f9" stroke-width="1"/><text x="36" y="18.0" text-anchor="end" font-size="10" fill="#94a3b8">$600</text><path d="M42.0,185.9 L75.8,180.4 L109.7,174.9 L143.5,169.4 L177.3,163.9 L211.2,158.4 L245.0,152.9 L278.8,149.5 L312.7,142.9 L346.5,136.3 L380.3,114.3 L414.2,64.6 L448.0,37.1 L448.0,208.0 L42.0,208.0 Z" fill="#dc2626" fill-opacity="0.10"/><path d="M42.0,185.9 L75.8,180.4 L109.7,174.9 L143.5,169.4 L177.3,163.9 L211.2,158.4 L245.0,152.9 L278.8,149.5 L312.7,142.9 L346.5,136.3 L380.3,114.3 L414.2,64.6 L448.0,37.1" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42.0" cy="185.9" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="75.8" cy="180.4" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="109.7" cy="174.9" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="143.5" cy="169.4" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="177.3" cy="163.9" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="211.2" cy="158.4" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="245.0" cy="152.9" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="278.8" cy="149.5" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="312.7" cy="142.9" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="346.5" cy="136.3" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="380.3" cy="114.3" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="414.2" cy="64.6" r="3" fill="#dc2626" stroke="#fff" stroke-width="1.5"/><circle cx="448.0" cy="37.1" r="4.5" fill="#dc2626" stroke="#fff" stroke-width="2.5"/><text x="440.0" y="27.1" text-anchor="end" font-size="11" font-weight="700" fill="#dc2626">$580</text><text x="42.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.05</text><text x="109.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.07</text><text x="177.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.09</text><text x="245.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">25.11</text><text x="312.7" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.01</text><text x="380.3" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.03</text><text x="448.0" y="230" text-anchor="middle" font-size="9" fill="#94a3b8">26.05</text></svg></div>
+      </div>
+    </div>
+    <div class="footnote">📊 <strong>차트 데이터 안내:</strong> 타피오카는 TTSA 공식 + 2025년 추정. 나머지 3종은 공개 벤치마크(CBOT, MATIF, USDA) 기반 월평균 추정. <strong>매일 자동 누적되면서 정확해져요.</strong></div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="bar"></span>품목별 상세 분석</h2>
+    <div class="detail">
+      <h3><span class="num">1</span> 🇮🇳 인도산 탈지대두박 (SBM 48% Hipro)</h3>
+      <h4>현재 시세 (FOB Kandla/Mundra)</h4>
+      <ul>
+        <li>약 <strong>$470~485/MT</strong> 추정</li>
+        <li>CBOT SBM 5월물 환산: $314.75/short ton ≒ <strong>$347/MT</strong></li>
+      </ul>
+      <h4>변동 요인</h4>
+      <ul>
+        <li>CBOT 일봉/시간봉 모두 <strong>Strong Sell</strong></li>
+        <li>(-) USDA: 2026년 미국 농가 대두 식부면적 확대</li>
+        <li>(+) 이란 사태로 사료비 인상 우려</li>
+      </ul>
+      <div class="quote">💬 <strong>구매 관점:</strong> <strong>지금이 분할 매수의 좋은 창</strong>. <strong>30~40% 이번 주 선매</strong>, 나머지는 $460/MT 이탈 시 추가.</div>
+    </div>
+
+    <div class="detail">
+      <h3><span class="num">2</span> 🇫🇷 프랑스산 옥수수 (Maize)</h3>
+      <h4>현재 시세 (FOB Bordeaux/Rouen)</h4>
+      <ul>
+        <li><strong>€199~207/MT ≒ $235~245/MT</strong> 추정</li>
+        <li>MATIF 옥수수: €195~210/MT 박스권</li>
+      </ul>
+      <div class="quote">💬 <strong>구매 관점:</strong> <strong>관망 권고</strong>. €195/MT 이탈 시 적극 매수, €210/MT 돌파 시 11월물 헷지 검토.</div>
+    </div>
+
+    <div class="detail">
+      <h3><span class="num">3</span> 🇺🇸 미국산 감자 (Russet Norkotah)</h3>
+      <h4>현재 시세 (USDA AMS 5월 보고서)</h4>
+      <ul>
+        <li>Idaho 50lb 카톤: <strong>$18~23/카톤</strong></li>
+        <li>가공품 환산: <strong>$390~460/MT</strong></li>
+      </ul>
+      <div class="quote">💬 <strong>구매 관점:</strong> <strong>관망</strong>. 30~45일분 단기 계약만, 7월 신곡 출하기에 4분기 본계약 협상.</div>
+    </div>
+
+    <div class="detail">
+      <h3><span class="num">4</span> 🇹🇭 태국산 타피오카 전분</h3>
+      <h4>현재 시세 (TTSA 공식, 2026-05-05)</h4>
+      <ul>
+        <li><strong>$580/MT (FOB Bangkok)</strong> Native</li>
+        <li>국내 도매: ฿17.90/kg (≒$555/MT)</li>
+      </ul>
+      <h4>5주간 추이</h4>
+      <table>
+        <thead><tr><th>주차</th><th>도매가 (THB/kg)</th><th>FOB (USD/MT)</th><th>변동</th></tr></thead>
+        <tbody>
+          <tr><td>03/31</td><td>16.20</td><td>$525</td><td>—</td></tr>
+          <tr><td>04/07</td><td>16.50</td><td>$540</td><td class="up">+$15</td></tr>
+          <tr><td>04/21</td><td>16.70</td><td>$555</td><td class="up">+$15</td></tr>
+          <tr><td>04/28</td><td>17.20</td><td>$565</td><td class="up">+$10</td></tr>
+          <tr><td><strong>05/05</strong></td><td><strong>17.90</strong></td><td><strong>$580</strong></td><td class="up"><strong>+$15</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="quote">💬 <strong>구매 관점:</strong> 🔴 <strong>가장 강한 매수 시그널</strong>. 5주 누적 +$55/MT (+10.5%). <strong>3분기 50~60% 이번 주 선매 권고</strong>.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="bar"></span>환율 & 운임 (2026-05-08)</h2>
+    <div class="fx-grid">
+      <div class="fx"><div class="pair">USD / KRW</div><div class="val">₩1,461.40</div><div class="note">수입 환산 기준</div></div>
+      <div class="fx"><div class="pair">USD / INR</div><div class="val">₹94.40</div><div class="note">INR 약세</div></div>
+      <div class="fx"><div class="pair">EUR / USD</div><div class="val">1.1774</div><div class="note">EUR 강세</div></div>
+      <div class="fx"><div class="pair">USD / THB</div><div class="val">฿32.23</div><div class="note">THB 강세</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec"><span class="bar"></span>다음 주 종합 구매 전략</h2>
+    <div class="strategy">
+      <div class="priority"><h3>🔴 우선순위 1 — 타피오카 전분</h3><p>3분기 필요량 <strong>50~60% 선매 락인</strong> 5/16까지.</p></div>
+      <div class="priority"><h3>🟢 우선순위 2 — 인도산 SBM</h3><p><strong>30~40% 이번 주, 나머지 $460/MT 이탈 시</strong>.</p></div>
+      <div class="priority"><h3>🟡 우선순위 3 — 옥수수 / 감자</h3><p><strong>최소 필요량 단기 계약</strong>만.</p></div>
+      <p style="text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);font-size:15px">💪 <strong>"빠르면 절약, 늦으면 비용"</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sources">
+      <h3>📚 출처</h3>
+      <ul>
+        <li><a href="https://www.investing.com/commodities/us-soybean-meal" target="_blank">CBOT SBM Futures</a></li>
+        <li><a href="https://dir.tridge.com/prices/soybean-meal/IN" target="_blank">Tridge India SBM</a></li>
+        <li><a href="https://www.zmp.de/en/futures/grain/matif-corn-paris-fr-future" target="_blank">MATIF Corn (ZMP)</a></li>
+        <li><a href="https://www.ams.usda.gov/mnreports/fvdidnop.pdf" target="_blank">USDA Potato Report</a></li>
+        <li><a href="https://www.thaitapiocastarch.org/en/information/statistics/weekly_tapioca_starch_price" target="_blank">TTSA Weekly Price</a></li>
+        <li><a href="https://www.xe.com/currencytables/?from=USD" target="_blank">XE Currency Rates</a></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+
+</body>
+</html>
