@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 세우(주) 일일 리포트 아카이브</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif; background: #f5f7fa; color: #1f2937; margin: 0; padding: 24px 16px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { color: #1e3a5f; border-bottom: 3px solid #2563eb; padding-bottom: 12px; }
+  .nav { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+  .nav a { color: #2563eb; font-weight: 600; text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+  .month-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 22px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .month-card h3 { color: #1e3a5f; margin-top: 0; border-left: 4px solid #2563eb; padding-left: 10px; }
+  .date-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-top: 10px; }
+  .date-item a { display: block; background: #f1f5f9; color: #1e3a5f; padding: 10px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; border: 1px solid #e5e7eb; transition: all 0.15s; }
+  .date-item a:hover { background: #2563eb; color: white; border-color: #2563eb; }
+  .date-item.today a { background: #2563eb; color: white; border-color: #2563eb; }
+  .date-item.snapshot a::before { content: "📸 "; }
+  .date-item.stub a::before { content: "📋 "; }
+  .legend { background: #f1f5f9; padding: 12px 16px; border-radius: 8px; font-size: 13px; color: #6b7280; margin: 14px 0; }
+  .footer { text-align: center; color: #6b7280; font-size: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="nav">
+  <a href="../index.html">← 오늘 리포트로 돌아가기</a>
+</div>
+
+<h1>📚 세우(주) 일일 리포트 아카이브</h1>
+<p style="color:#6b7280">민수님이 발행받은 모든 일자별 시세 리포트를 한곳에서 확인하실 수 있어요. 매일 자동 스냅샷이 누적되는 시스템입니다.</p>
+
+<div class="legend">
+  <b>범례</b> &nbsp; 📸 자동 스냅샷 (전체 내용 보관) &nbsp;·&nbsp; 📋 메타 정보만 (시스템 도입 이전)
+</div>
+
+<div class="month-card">
+  <h3>📅 2026년 5월</h3>
+  <div class="date-grid">
+    <div class="date-item today snapshot"><a href="../index.html">05-14 (목) ⭐ 오늘</a></div>
+    <div class="date-item snapshot"><a href="./2026-05-14.html">05-14 스냅샷</a></div>
+    <div class="date-item stub"><a href="./2026-05-13.html">05-13 (수)</a></div>
+    <div class="date-item stub"><a href="./2026-05-12.html">05-12 (화)</a></div>
+    <div class="date-item stub"><a href="./2026-05-11.html">05-11 (월)</a></div>
+    <div class="date-item stub"><a href="./2026-05-08.html">05-08 (금)</a></div>
+    <div class="date-item stub"><a href="./2026-05-07.html">05-07 (목)</a></div>
+  </div>
+</div>
+
+<div class="month-card">
+  <h3>🔗 과거 데이터 조회 (외부)</h3>
+  <p style="font-size:13px;color:#6b7280">시스템 도입 이전 일자라도 원자료 사이트에서 일별 시세를 직접 조회할 수 있어요.</p>
+  <ul style="font-size:13px">
+    <li><a href="https://www.investing.com/commodities/us-soybean-meal-historical-data" target="_blank">CBOT SBM Historical</a> — 일별 종가</li>
+    <li><a href="https://www.thaitapiocastarch.org/en/information/statistics/weekly_tapioca_starch_price" target="_blank">TTSA — 타피오카 주간 시세 보관소</a></li>
+    <li><a href="https://www.indexmundi.com/commodities/?commodity=soybean-meal&months=60" target="_blank">IndexMundi — SBM 60개월 추이</a></li>
+    <li><a href="https://www.barchart.com/futures/quotes/XBQ10/futures-prices" target="_blank">Barchart — MATIF Corn 과거</a></li>
+    <li><a href="https://sopa.org/statistics/" target="_blank">SOPA 통계 아카이브</a></li>
+    <li><a href="https://www.ams.usda.gov/market-news/fruits-vegetables" target="_blank">USDA AMS — 감자 리포트 아카이브</a></li>
+    <li><a href="https://www.ceicdata.com/en/india/commodities-spot-price-national-commodity--derivatives-exchange-limited/ncdex-spot-price-soybean-meal-hipro-indore-second-session" target="_blank">CEIC — NCDEX SBM Indore 시계열</a></li>
+  </ul>
+</div>
+
+<div class="footer">
+  🤖 매일 자동 누적되는 세우(주) 구매팀 리포트 아카이브
+</div>
+
+</div>
+</body>
+</html>
