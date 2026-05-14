@@ -6,78 +6,24 @@
 <title>세우(주) 원자재 4종 일일 시세 리포트</title>
 <style>
   :root {
-    --bg: #f5f7fa;
-    --card: #ffffff;
-    --primary: #1e3a5f;
-    --accent: #2563eb;
-    --text: #1f2937;
-    --muted: #6b7280;
-    --green: #16a34a;
-    --yellow: #d97706;
-    --red: #dc2626;
-    --border: #e5e7eb;
-    --soft: #f1f5f9;
+    --bg: #f5f7fa; --card: #ffffff; --primary: #1e3a5f; --accent: #2563eb;
+    --text: #1f2937; --muted: #6b7280; --green: #16a34a; --yellow: #d97706;
+    --red: #dc2626; --border: #e5e7eb; --soft: #f1f5f9;
   }
   * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    line-height: 1.6;
-    padding: 24px 16px;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; padding: 24px 16px; }
   .container { max-width: 980px; margin: 0 auto; }
-  h1 {
-    font-size: 28px;
-    color: var(--primary);
-    border-bottom: 3px solid var(--accent);
-    padding-bottom: 12px;
-    margin-bottom: 8px;
-  }
-  h2 {
-    font-size: 20px;
-    color: var(--primary);
-    margin-top: 36px;
-    padding-left: 10px;
-    border-left: 4px solid var(--accent);
-  }
+  h1 { font-size: 28px; color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 12px; margin-bottom: 8px; }
+  h2 { font-size: 20px; color: var(--primary); margin-top: 36px; padding-left: 10px; border-left: 4px solid var(--accent); }
   h3 { font-size: 16px; color: var(--primary); margin-top: 18px; margin-bottom: 8px; }
   .meta { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
   .meta b { color: var(--text); }
-
-  .headline {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
-    color: white;
-    padding: 22px 24px;
-    border-radius: 12px;
-    margin: 16px 0 24px;
-    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
-  }
-  .headline h2 {
-    color: white;
-    border: none;
-    padding: 0;
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    opacity: 0.9;
-  }
+  .headline { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 22px 24px; border-radius: 12px; margin: 16px 0 24px; box-shadow: 0 4px 12px rgba(30,58,95,0.15); }
+  .headline h2 { color: white; border: none; padding: 0; margin: 0 0 8px 0; font-size: 16px; opacity: 0.9; }
   .headline p { margin: 0; font-size: 15px; line-height: 1.7; }
   .headline strong { color: #fde047; }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-    margin: 14px 0;
-  }
-  .kpi {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   .kpi .label { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
   .kpi .price { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
   .kpi .changes { display: flex; gap: 8px; font-size: 11px; color: var(--muted); margin-bottom: 6px; flex-wrap: wrap; }
@@ -86,200 +32,65 @@
   .signal-buy { background: #dcfce7; color: var(--green); }
   .signal-hold { background: #fef3c7; color: var(--yellow); }
   .signal-lock { background: #fee2e2; color: var(--red); }
-
-  .reference {
-    background: var(--soft);
-    border-radius: 8px;
-    padding: 14px 18px;
-    font-size: 13px;
-    margin: 16px 0 24px;
-    color: var(--muted);
-  }
+  .reference { background: var(--soft); border-radius: 8px; padding: 14px 18px; font-size: 13px; margin: 16px 0 24px; color: var(--muted); }
   .reference b { color: var(--primary); }
-
-  .chart-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin: 14px 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   .chart-card .ctitle { font-weight: 600; color: var(--primary); margin-bottom: 4px; }
   .chart-card .csub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-
-  .detail {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin: 14px 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
+  .detail { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   .detail h3 { margin-top: 0; }
   .detail ul { padding-left: 20px; margin: 6px 0; }
   .detail li { margin-bottom: 4px; font-size: 14px; }
-  .comment {
-    background: #eff6ff;
-    border-left: 4px solid var(--accent);
-    padding: 12px 16px;
-    margin: 12px 0;
-    border-radius: 0 6px 6px 0;
-    font-size: 14px;
-  }
+  .comment { background: #eff6ff; border-left: 4px solid var(--accent); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
   .comment.urgent { background: #fef2f2; border-left-color: var(--red); }
   .comment.hold { background: #fffbeb; border-left-color: var(--yellow); }
   .comment.buy { background: #f0fdf4; border-left-color: var(--green); }
-
   table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
   th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
   th { background: var(--soft); color: var(--primary); font-weight: 600; }
   tr.highlight td { background: #fffbeb; font-weight: 700; }
-
-  .fx-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 10px;
-    margin: 14px 0;
-  }
-  .fx {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    text-align: center;
-  }
+  .fx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 14px 0; }
+  .fx { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
   .fx .pair { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
   .fx .val { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
   .fx .note { font-size: 11px; color: var(--muted); }
   .fx.warn .val { color: var(--red); }
   .fx.good .val { color: var(--green); }
-
-  .strategy-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 5px solid var(--accent);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 10px 0;
-  }
+  .strategy-card { background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
   .strategy-card.p1 { border-left-color: var(--red); }
   .strategy-card.p2 { border-left-color: var(--green); }
   .strategy-card.p3 { border-left-color: var(--yellow); }
   .strategy-card .ptitle { font-weight: 700; color: var(--primary); margin-bottom: 6px; font-size: 15px; }
   .strategy-card p { margin: 4px 0; font-size: 13px; }
-
-  .motto {
-    text-align: center;
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--primary);
-    padding: 20px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
-    border-radius: 10px;
-    margin: 24px 0;
-  }
-
-  .sources {
-    background: var(--soft);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 20px 0;
-    font-size: 13px;
-  }
+  .motto { text-align: center; font-size: 17px; font-weight: 700; color: var(--primary); padding: 20px; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 10px; margin: 24px 0; }
+  .sources { background: var(--soft); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 13px; }
   .sources h3 { margin-top: 0; }
   .sources a { color: var(--accent); text-decoration: none; }
   .sources a:hover { text-decoration: underline; }
-
-  .footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    padding: 20px 0;
-    border-top: 1px solid var(--border);
-    margin-top: 30px;
-  }
-
-  /* Archive nav bar */
-  .archive-nav {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .archive-nav .label {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 600;
-  }
-  .archive-nav a {
-    background: var(--soft);
-    color: var(--primary);
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.15s;
-    border: 1px solid var(--border);
-  }
-  .archive-nav a:hover {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-  .archive-nav a.today {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-  .archive-nav a.all {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-  }
-
-  /* NCDEX box */
-  .ncdex-box {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-    border: 2px solid #fb923c;
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin: 14px 0;
-  }
-  .ncdex-box .ntitle {
-    font-weight: 700;
-    color: #c2410c;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
+  .footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px 0; border-top: 1px solid var(--border); margin-top: 30px; }
+  .archive-nav { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .archive-nav .label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .archive-nav a { background: var(--soft); color: var(--primary); padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; border: 1px solid var(--border); }
+  .archive-nav a:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .archive-nav a.today { background: var(--accent); color: white; border-color: var(--accent); }
+  .archive-nav a.all { background: var(--primary); color: white; border-color: var(--primary); }
+  .ncdex-box { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 2px solid #fb923c; border-radius: 10px; padding: 14px 18px; margin: 14px 0; }
+  .ncdex-box .ntitle { font-weight: 700; color: #c2410c; margin-bottom: 8px; font-size: 14px; }
   .ncdex-box table { margin: 6px 0; font-size: 13px; }
   .ncdex-box th { background: #fed7aa; color: #7c2d12; }
-  .ncdex-box a {
-    color: #c2410c;
-    font-weight: 600;
-    text-decoration: none;
-    margin-right: 12px;
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 13px;
-  }
+  .ncdex-box a { color: #c2410c; font-weight: 600; text-decoration: none; margin-right: 12px; display: inline-block; margin-top: 6px; font-size: 13px; }
   .ncdex-box a:hover { text-decoration: underline; }
+  .ncdex-chart { background:#fff; border:1px solid #fed7aa; border-radius:8px; padding:12px 14px; margin:12px 0; }
+  .ncdex-chart .nct { font-weight:700; color:#c2410c; font-size:13px; margin-bottom:2px; }
+  .ncdex-chart .ncs { font-size:11px; color:#9a3412; margin-bottom:6px; }
+  .ncdex-chart .ncn { font-size:11px; color:#9a3412; margin:4px 0 0; }
 </style>
 </head>
 <body>
 <div class="container">
 
   <h1>📊 세우(주) 원자재 4종 일일 시세 리포트</h1>
-  <div class="meta">
-    📅 <b>2026-05-14 (목)</b> &nbsp;|&nbsp; 📊 데이터 기준: 2026-05-13 종가 &nbsp;|&nbsp; 👤 구매팀 민수님
-  </div>
+  <div class="meta">📅 <b>2026-05-14 (목)</b> &nbsp;|&nbsp; 📊 데이터 기준: 2026-05-13 종가 &nbsp;|&nbsp; 👤 구매팀 민수님</div>
 
   <div class="archive-nav">
     <span class="label">🗓️ 일자별 리포트:</span>
@@ -299,35 +110,30 @@
 
   <h2>KPI 요약 (FOB / USD/MT)</h2>
   <div class="grid">
-
     <div class="kpi">
       <div class="label">🇮🇳 인도산 SBM 48% Hipro</div>
       <div class="price">$465~480 /MT</div>
       <div class="changes"><span>일 -0.3%</span><span>주 -1.0%</span><span>월 -2.5%</span></div>
       <div class="signal signal-buy">🟢 분할 매수</div>
     </div>
-
     <div class="kpi">
       <div class="label">🇫🇷 프랑스산 옥수수 (Bordeaux/Rouen)</div>
       <div class="price">$235~248 /MT <span style="font-size:12px;color:var(--muted)">(€201~212)</span></div>
       <div class="changes"><span>일 +0.4%</span><span>주 +1.2%</span><span>월 +2.0%</span></div>
       <div class="signal signal-hold">🟡 관망</div>
     </div>
-
     <div class="kpi">
       <div class="label">🇺🇸 미국산 감자 Russet Norkotah</div>
       <div class="price">$420~460 /MT <span style="font-size:12px;color:var(--muted)">(가공 환산)</span></div>
       <div class="changes"><span>일 보합</span><span>주 +1.5%</span><span>월 +3.5%</span></div>
       <div class="signal signal-hold">🟡 관망</div>
     </div>
-
     <div class="kpi">
       <div class="label">🇹🇭 태국산 타피오카 전분 (FOB Bangkok)</div>
       <div class="price">$605 /MT <span style="font-size:12px;color:var(--muted)">(Native)</span></div>
       <div class="changes"><span>일 +0.8%</span><span>주 +4.3%</span><span>월 +12.0%</span></div>
       <div class="signal signal-lock">🔴 즉시 락인</div>
     </div>
-
   </div>
 
   <div class="reference">
@@ -340,26 +146,20 @@
     <div class="ctitle">🇮🇳 인도산 SBM 48% Hipro 월평균 추정</div>
     <div class="csub">단위: USD/MT (FOB Kandla/Mundra)</div>
     <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <!-- grid lines -->
-      <line x1="50" y1="20"  x2="700" y2="20"  stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="65"  x2="700" y2="65"  stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="65" x2="700" y2="65" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="110" x2="700" y2="110" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="155" x2="700" y2="155" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <!-- y labels (range ~$460-$500) -->
-      <text x="10" y="24"  font-size="11" fill="#6b7280">$500</text>
-      <text x="10" y="69"  font-size="11" fill="#6b7280">$490</text>
+      <text x="10" y="24" font-size="11" fill="#6b7280">$500</text>
+      <text x="10" y="69" font-size="11" fill="#6b7280">$490</text>
       <text x="10" y="114" font-size="11" fill="#6b7280">$480</text>
       <text x="10" y="159" font-size="11" fill="#6b7280">$470</text>
       <text x="10" y="184" font-size="11" fill="#6b7280">$460</text>
-      <!-- data: 465,470,475,480,478,475,478,482,485,490,495,488,472  (y = 180 - (v-460)*4.5) -->
-      <polyline fill="none" stroke="#2563eb" stroke-width="2.5"
-        points="50,158 104,135 158,113 212,90 266,99 320,113 374,99 428,81 482,68 536,45 590,23 644,54 698,126"/>
-      <!-- last point highlight -->
+      <polyline fill="none" stroke="#2563eb" stroke-width="2.5" points="50,158 104,135 158,113 212,90 266,99 320,113 374,99 428,81 482,68 536,45 590,23 644,54 698,126"/>
       <circle cx="698" cy="126" r="5" fill="#dc2626"/>
       <text x="640" y="150" font-size="12" font-weight="bold" fill="#dc2626">$472</text>
-      <!-- x labels -->
-      <text x="46"  y="205" font-size="10" fill="#6b7280">25.05</text>
+      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
       <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
       <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
       <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
@@ -373,22 +173,20 @@
     <div class="ctitle">🇫🇷 프랑스산 옥수수 월평균 추정</div>
     <div class="csub">단위: USD/MT (FOB Bordeaux/Rouen)</div>
     <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20"  x2="700" y2="20"  stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60"  x2="700" y2="60"  stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24"  font-size="11" fill="#6b7280">$250</text>
-      <text x="10" y="64"  font-size="11" fill="#6b7280">$240</text>
+      <text x="10" y="24" font-size="11" fill="#6b7280">$250</text>
+      <text x="10" y="64" font-size="11" fill="#6b7280">$240</text>
       <text x="10" y="104" font-size="11" fill="#6b7280">$230</text>
       <text x="10" y="144" font-size="11" fill="#6b7280">$220</text>
       <text x="10" y="184" font-size="11" fill="#6b7280">$210</text>
-      <!-- data: 215,218,220,225,228,230,232,235,238,238,240,241,242 (y = 180 - (v-210)*4) -->
-      <polyline fill="none" stroke="#16a34a" stroke-width="2.5"
-        points="50,160 104,148 158,140 212,120 266,108 320,100 374,92 428,80 482,68 536,68 590,60 644,56 698,52"/>
+      <polyline fill="none" stroke="#16a34a" stroke-width="2.5" points="50,160 104,148 158,140 212,120 266,108 320,100 374,92 428,80 482,68 536,68 590,60 644,56 698,52"/>
       <circle cx="698" cy="52" r="5" fill="#16a34a"/>
       <text x="640" y="42" font-size="12" font-weight="bold" fill="#16a34a">$242</text>
-      <text x="46"  y="205" font-size="10" fill="#6b7280">25.05</text>
+      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
       <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
       <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
       <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
@@ -402,22 +200,20 @@
     <div class="ctitle">🇺🇸 미국산 감자 (Russet) 월평균 추정</div>
     <div class="csub">단위: USD/MT (Frozen Fry급 raw FOB equivalent)</div>
     <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20"  x2="700" y2="20"  stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60"  x2="700" y2="60"  stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24"  font-size="11" fill="#6b7280">$450</text>
-      <text x="10" y="64"  font-size="11" fill="#6b7280">$430</text>
+      <text x="10" y="24" font-size="11" fill="#6b7280">$450</text>
+      <text x="10" y="64" font-size="11" fill="#6b7280">$430</text>
       <text x="10" y="104" font-size="11" fill="#6b7280">$410</text>
       <text x="10" y="144" font-size="11" fill="#6b7280">$390</text>
       <text x="10" y="184" font-size="11" fill="#6b7280">$370</text>
-      <!-- data: 370,380,385,390,395,400,410,415,420,425,428,430,440 (y = 180 - (v-370)*2) -->
-      <polyline fill="none" stroke="#d97706" stroke-width="2.5"
-        points="50,180 104,160 158,150 212,140 266,130 320,120 374,100 428,90 482,80 536,70 590,64 644,60 698,40"/>
+      <polyline fill="none" stroke="#d97706" stroke-width="2.5" points="50,180 104,160 158,150 212,140 266,130 320,120 374,100 428,90 482,80 536,70 590,64 644,60 698,40"/>
       <circle cx="698" cy="40" r="5" fill="#d97706"/>
       <text x="640" y="30" font-size="12" font-weight="bold" fill="#d97706">$440</text>
-      <text x="46"  y="205" font-size="10" fill="#6b7280">25.05</text>
+      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
       <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
       <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
       <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
@@ -431,22 +227,20 @@
     <div class="ctitle">🇹🇭 태국산 타피오카 전분 TTSA 실측</div>
     <div class="csub">단위: USD/MT (FOB Bangkok, Native) — 가장 강한 상승 추세 ⚠️</div>
     <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20"  x2="700" y2="20"  stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60"  x2="700" y2="60"  stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
+      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
       <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24"  font-size="11" fill="#6b7280">$610</text>
-      <text x="10" y="64"  font-size="11" fill="#6b7280">$560</text>
+      <text x="10" y="24" font-size="11" fill="#6b7280">$610</text>
+      <text x="10" y="64" font-size="11" fill="#6b7280">$560</text>
       <text x="10" y="104" font-size="11" fill="#6b7280">$510</text>
       <text x="10" y="144" font-size="11" fill="#6b7280">$460</text>
       <text x="10" y="184" font-size="11" fill="#6b7280">$420</text>
-      <!-- data: 425,440,455,465,475,485,490,480,480,490,510,555,605 (y = 180 - (v-420)*0.8) -->
-      <polyline fill="none" stroke="#dc2626" stroke-width="2.5"
-        points="50,176 104,164 158,152 212,144 266,136 320,128 374,124 428,132 482,132 536,124 590,108 644,72 698,32"/>
+      <polyline fill="none" stroke="#dc2626" stroke-width="2.5" points="50,176 104,164 158,152 212,144 266,136 320,128 374,124 428,132 482,132 536,124 590,108 644,72 698,32"/>
       <circle cx="698" cy="32" r="6" fill="#dc2626"/>
       <text x="635" y="22" font-size="13" font-weight="bold" fill="#dc2626">$605 ⚠️</text>
-      <text x="46"  y="205" font-size="10" fill="#6b7280">25.05</text>
+      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
       <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
       <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
       <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
@@ -456,13 +250,10 @@
     </svg>
   </div>
 
-  <p style="font-size:13px;color:var(--muted);background:var(--soft);padding:12px 16px;border-radius:8px;">
-    📊 <b>차트 데이터 안내:</b> 타피오카는 TTSA 공식 + 2025년 추정 보강. 나머지 3종은 공개 벤치마크(CBOT, MATIF, USDA) 기반 월평균 추정. <b>매일 자동 누적되면서 정확해져요.</b>
-  </p>
+  <p style="font-size:13px;color:var(--muted);background:var(--soft);padding:12px 16px;border-radius:8px;">📊 <b>차트 데이터 안내:</b> 타피오카는 TTSA 공식 + 2025년 추정 보강. 나머지 3종은 공개 벤치마크(CBOT, MATIF, USDA) 기반 월평균 추정. <b>매일 자동 누적되면서 정확해져요.</b></p>
 
   <h2>품목별 상세 분석</h2>
 
-  <!-- SBM -->
   <div class="detail">
     <h3>1️⃣ 🇮🇳 인도산 탈지대두박 (SBM 48% Hipro)</h3>
     <p><b>현재 시세 (FOB Kandla/Mundra):</b> $465~480 /MT (추정)</p>
@@ -488,39 +279,27 @@
         <tr><td>NCDEX SOYDEX 지수</td><td>1,218 pt (추정)</td><td>—</td><td>3종 종합</td></tr>
       </table>
 
-      <!-- NCDEX Hipro SBM Indore Chart (INR/MT) -->
-      <div style="background:#fff;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;margin:12px 0">
-        <div style="font-weight:700;color:#c2410c;font-size:13px;margin-bottom:2px">📈 NCDEX Hipro SBM Indore 월별 현물가 (INR/MT)</div>
-        <div style="font-size:11px;color:#9a3412;margin-bottom:6px">2025-05 ~ 2026-05 · 좌측 INR/MT · 우측 USD/MT 환산</div>
+      <div class="ncdex-chart">
+        <div class="nct">📈 NCDEX Hipro SBM Indore 월별 현물가 (INR/MT)</div>
+        <div class="ncs">2025-05 ~ 2026-05 · 좌측 INR/MT · 우측 USD/MT 환산 (점선)</div>
         <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <!-- grid lines -->
-          <line x1="60" y1="20"  x2="660" y2="20"  stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="65"  x2="660" y2="65"  stroke="#fed7aa" stroke-width="1"/>
+          <line x1="60" y1="20" x2="660" y2="20" stroke="#fed7aa" stroke-width="1"/>
+          <line x1="60" y1="65" x2="660" y2="65" stroke="#fed7aa" stroke-width="1"/>
           <line x1="60" y1="110" x2="660" y2="110" stroke="#fed7aa" stroke-width="1"/>
           <line x1="60" y1="155" x2="660" y2="155" stroke="#fed7aa" stroke-width="1"/>
           <line x1="60" y1="200" x2="660" y2="200" stroke="#fb923c" stroke-width="1.5"/>
-          <!-- left y axis (INR) labels: 40000 / 38500 / 37000 / 35500 / 34000 -->
-          <text x="6"  y="24"  font-size="11" fill="#9a3412">₹40k</text>
-          <text x="6"  y="69"  font-size="11" fill="#9a3412">₹38.5k</text>
-          <text x="6"  y="114" font-size="11" fill="#9a3412">₹37k</text>
-          <text x="6"  y="159" font-size="11" fill="#9a3412">₹35.5k</text>
-          <text x="6"  y="204" font-size="11" fill="#9a3412">₹34k</text>
-          <!-- right y axis (USD) labels: $445 / $425 / $410 / $395 / $380 (scaled separately) -->
-          <text x="665" y="24"  font-size="11" fill="#2563eb">$445</text>
-          <text x="665" y="69"  font-size="11" fill="#2563eb">$425</text>
+          <text x="6" y="24" font-size="11" fill="#9a3412">₹40k</text>
+          <text x="6" y="69" font-size="11" fill="#9a3412">₹38.5k</text>
+          <text x="6" y="114" font-size="11" fill="#9a3412">₹37k</text>
+          <text x="6" y="159" font-size="11" fill="#9a3412">₹35.5k</text>
+          <text x="6" y="204" font-size="11" fill="#9a3412">₹34k</text>
+          <text x="665" y="24" font-size="11" fill="#2563eb">$445</text>
+          <text x="665" y="69" font-size="11" fill="#2563eb">$425</text>
           <text x="665" y="114" font-size="11" fill="#2563eb">$410</text>
           <text x="665" y="159" font-size="11" fill="#2563eb">$395</text>
           <text x="665" y="204" font-size="11" fill="#2563eb">$380</text>
-
-          <!-- INR data: 33500,34000,34500,35000,35200,35800,36500,37000,37500,38200,39000,39500,39200 -->
-          <!-- mapping: y = 200 - (v-34000)*45/1500 = 200 - (v-34000)*0.03 -->
-          <!-- 33500: y=215 (off) clip to 210; let's adjust formula -->
-          <!-- Better mapping: y_INR(v) = 200 - (v-34000)*30/1000  → 200 - 0.030*(v-34000) -->
-          <!-- 33500: 200-(-500*0.030)=215, 40000: 200-(6000*0.030)=20 ✓ -->
-          <polyline fill="none" stroke="#c2410c" stroke-width="2.8"
-            points="60,215 110,200 160,185 210,170 260,164 310,146 360,125 410,110 460,95 510,74 560,50 610,35 660,44"/>
-          <!-- dots on each month -->
-          <circle cx="60"  cy="215" r="3" fill="#c2410c"/>
+          <polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,215 110,200 160,185 210,170 260,164 310,146 360,125 410,110 460,95 510,74 560,50 610,35 660,44"/>
+          <circle cx="60" cy="215" r="3" fill="#c2410c"/>
           <circle cx="110" cy="200" r="3" fill="#c2410c"/>
           <circle cx="160" cy="185" r="3" fill="#c2410c"/>
           <circle cx="210" cy="170" r="3" fill="#c2410c"/>
@@ -528,49 +307,63 @@
           <circle cx="310" cy="146" r="3" fill="#c2410c"/>
           <circle cx="360" cy="125" r="3" fill="#c2410c"/>
           <circle cx="410" cy="110" r="3" fill="#c2410c"/>
-          <circle cx="460" cy="95"  r="3" fill="#c2410c"/>
-          <circle cx="510" cy="74"  r="3" fill="#c2410c"/>
-          <circle cx="560" cy="50"  r="3" fill="#c2410c"/>
-          <circle cx="610" cy="35"  r="3" fill="#c2410c"/>
-          <circle cx="660" cy="44"  r="6" fill="#dc2626" stroke="#fff" stroke-width="2"/>
-
-          <!-- USD/MT line (secondary, dashed blue) -->
-          <!-- USD data: 409,407,410,415,416,420,425,428,430,435,440,432,410 -->
-          <!-- mapping: y_USD(v) = 200 - (v-380)*45/15 = 200 - 3*(v-380) -->
-          <!-- 409: 200-87=113, 440: 200-180=20 ✓ -->
-          <polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3"
-            points="60,113 110,119 160,110 210,95 260,92 310,80 360,65 410,56 460,50 510,35 560,20 610,44 660,113"/>
-
-          <!-- last point label -->
+          <circle cx="460" cy="95" r="3" fill="#c2410c"/>
+          <circle cx="510" cy="74" r="3" fill="#c2410c"/>
+          <circle cx="560" cy="50" r="3" fill="#c2410c"/>
+          <circle cx="610" cy="35" r="3" fill="#c2410c"/>
+          <circle cx="660" cy="44" r="6" fill="#dc2626" stroke="#fff" stroke-width="2"/>
+          <polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3" points="60,113 110,119 160,110 210,95 260,92 310,80 360,65 410,56 460,50 510,35 560,20 610,44 660,113"/>
           <text x="610" y="62" font-size="12" font-weight="bold" fill="#dc2626">₹39.2k</text>
           <text x="610" y="135" font-size="11" font-weight="bold" fill="#2563eb">$410</text>
-
-          <!-- x labels -->
-          <text x="50"  y="232" font-size="10" fill="#9a3412">25.05</text>
+          <text x="50" y="232" font-size="10" fill="#9a3412">25.05</text>
           <text x="155" y="232" font-size="10" fill="#9a3412">25.07</text>
           <text x="255" y="232" font-size="10" fill="#9a3412">25.09</text>
           <text x="355" y="232" font-size="10" fill="#9a3412">25.11</text>
           <text x="455" y="232" font-size="10" fill="#9a3412">26.01</text>
           <text x="555" y="232" font-size="10" fill="#9a3412">26.03</text>
           <text x="645" y="232" font-size="10" fill="#9a3412">26.05</text>
-
-          <!-- legend -->
           <rect x="60" y="6" width="14" height="3" fill="#c2410c"/>
           <text x="78" y="12" font-size="10" fill="#c2410c">INR/MT</text>
           <line x1="140" y1="8" x2="154" y2="8" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
           <text x="158" y="12" font-size="10" fill="#2563eb">USD/MT (환율 반영)</text>
         </svg>
-        <p style="font-size:11px;color:#9a3412;margin:4px 0 0">
-          <b>분석:</b> INR 기준 12개월 +17.0% 상승, 그러나 <b>4월 이후 INR 약세로 USD 환산은 다시 $410선까지 하락</b>.
-          이게 인도 SBM FOB가 약세를 띠는 핵심 원인이에요.
-        </p>
+        <p class="ncn"><b>분석:</b> INR 기준 12개월 +17.0% 상승, 그러나 <b>4월 이후 INR 약세로 USD 환산은 다시 $410선까지 하락</b>. 이게 인도 SBM FOB가 약세를 띠는 핵심 원인이에요.</p>
       </div>
 
-      <!-- SOYDEX Index Chart -->
-      <div style="background:#fff;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;margin:12px 0">
-        <div style="font-weight:700;color:#c2410c;font-size:13px;margin-bottom:2px">📊 NCDEX SOYDEX 지수 (콩·SBM·SOIL 종합)</div>
-        <div style="font-size:11px;color:#9a3412;margin-bottom:6px">베이스 1,000 기준 · 인도 대두 생태계 종합 모니터링</div>
+      <div class="ncdex-chart">
+        <div class="nct">📊 NCDEX SOYDEX 지수 (콩·SBM·SOIL 종합)</div>
+        <div class="ncs">베이스 1,000 기준 · 인도 대두 생태계 종합 모니터링</div>
         <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <line x1="60" y1="20"  x2="680" y2="20"  stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="60"  x2="680" y2="60"  stroke="#fed7aa" stroke-width="1"/>
-          <line x1="
+          <line x1="60" y1="20" x2="680" y2="20" stroke="#fed7aa" stroke-width="1"/>
+          <line x1="60" y1="60" x2="680" y2="60" stroke="#fed7aa" stroke-width="1"/>
+          <line x1="60" y1="100" x2="680" y2="100" stroke="#fed7aa" stroke-width="1"/>
+          <line x1="60" y1="140" x2="680" y2="140" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="6" y="24" font-size="11" fill="#9a3412">1,260</text>
+          <text x="6" y="64" font-size="11" fill="#9a3412">1,200</text>
+          <text x="6" y="104" font-size="11" fill="#9a3412">1,140</text>
+          <text x="6" y="144" font-size="11" fill="#9a3412">1,080</text>
+          <polyline fill="#fdba74" fill-opacity="0.25" stroke="none" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48 670,140 60,140"/>
+          <polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48"/>
+          <circle cx="670" cy="48" r="5" fill="#dc2626" stroke="#fff" stroke-width="2"/>
+          <text x="620" y="38" font-size="12" font-weight="bold" fill="#dc2626">1,218 pt</text>
+          <text x="50" y="170" font-size="10" fill="#9a3412">25.05</text>
+          <text x="155" y="170" font-size="10" fill="#9a3412">25.07</text>
+          <text x="255" y="170" font-size="10" fill="#9a3412">25.09</text>
+          <text x="355" y="170" font-size="10" fill="#9a3412">25.11</text>
+          <text x="455" y="170" font-size="10" fill="#9a3412">26.01</text>
+          <text x="555" y="170" font-size="10" fill="#9a3412">26.03</text>
+          <text x="650" y="170" font-size="10" fill="#9a3412">26.05</text>
+        </svg>
+        <p class="ncn"><b>SOYDEX 12개월 +11.2%</b> — 인도 대두 생태계 전반 강세. 다만 5월 들어 정점 대비 -1.4% 조정 신호.</p>
+      </div>
+
+      <p style="font-size:12px;color:#7c2d12;margin:6px 0">※ NCDEX 현물가에 FOB 프리미엄 + 항구 운송비(약 $50~70/MT) 가산 시 Kandla/Mundra FOB 환산. 인도 SBM 수출 FOB의 <b>선행지표</b>로 활용.</p>
+      <a href="https://www.ncdex.com/products/SBMEALIDR" target="_blank">🔗 SBMEALIDR</a>
+      <a href="https://www.ncdex.com/products/SYBEANIDR" target="_blank">🔗 SYBEANIDR (콩)</a>
+      <a href="https://ncdex.com/products/SOYDEX" target="_blank">🔗 SOYDEX 지수</a>
+      <a href="https://www.ncdex.com/market-data/spot-prices" target="_blank">🔗 NCDEX Spot</a>
+      <a href="https://www.ceicdata.com/en/india/commodities-spot-price-national-commodity--derivatives-exchange-limited/ncdex-spot-price-soybean-meal-hipro-indore-second-session" target="_blank">🔗 CEIC Historical</a>
+    </div>
+
+    <div class="comment buy">
+      💬 <b>구매 관
