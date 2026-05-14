@@ -5,365 +5,457 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>세우(주) 원자재 4종 일일 시세 리포트</title>
 <style>
-  :root {
-    --bg: #f5f7fa; --card: #ffffff; --primary: #1e3a5f; --accent: #2563eb;
-    --text: #1f2937; --muted: #6b7280; --green: #16a34a; --yellow: #d97706;
-    --red: #dc2626; --border: #e5e7eb; --soft: #f1f5f9;
-  }
-  * { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; padding: 24px 16px; }
-  .container { max-width: 980px; margin: 0 auto; }
-  h1 { font-size: 28px; color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 12px; margin-bottom: 8px; }
-  h2 { font-size: 20px; color: var(--primary); margin-top: 36px; padding-left: 10px; border-left: 4px solid var(--accent); }
-  h3 { font-size: 16px; color: var(--primary); margin-top: 18px; margin-bottom: 8px; }
-  .meta { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
-  .meta b { color: var(--text); }
-  .headline { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 22px 24px; border-radius: 12px; margin: 16px 0 24px; box-shadow: 0 4px 12px rgba(30,58,95,0.15); }
-  .headline h2 { color: white; border: none; padding: 0; margin: 0 0 8px 0; font-size: 16px; opacity: 0.9; }
-  .headline p { margin: 0; font-size: 15px; line-height: 1.7; }
-  .headline strong { color: #fde047; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0; }
-  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-  .kpi .label { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
-  .kpi .price { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-  .kpi .changes { display: flex; gap: 8px; font-size: 11px; color: var(--muted); margin-bottom: 6px; flex-wrap: wrap; }
-  .kpi .changes span { background: var(--soft); padding: 2px 8px; border-radius: 4px; }
-  .kpi .signal { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 6px; display: inline-block; }
-  .signal-buy { background: #dcfce7; color: var(--green); }
-  .signal-hold { background: #fef3c7; color: var(--yellow); }
-  .signal-lock { background: #fee2e2; color: var(--red); }
-  .reference { background: var(--soft); border-radius: 8px; padding: 14px 18px; font-size: 13px; margin: 16px 0 24px; color: var(--muted); }
-  .reference b { color: var(--primary); }
-  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-  .chart-card .ctitle { font-weight: 600; color: var(--primary); margin-bottom: 4px; }
-  .chart-card .csub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-  .detail { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-  .detail h3 { margin-top: 0; }
-  .detail ul { padding-left: 20px; margin: 6px 0; }
-  .detail li { margin-bottom: 4px; font-size: 14px; }
-  .comment { background: #eff6ff; border-left: 4px solid var(--accent); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
-  .comment.urgent { background: #fef2f2; border-left-color: var(--red); }
-  .comment.hold { background: #fffbeb; border-left-color: var(--yellow); }
-  .comment.buy { background: #f0fdf4; border-left-color: var(--green); }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
-  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-  th { background: var(--soft); color: var(--primary); font-weight: 600; }
-  tr.highlight td { background: #fffbeb; font-weight: 700; }
-  .fx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 14px 0; }
-  .fx { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
-  .fx .pair { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  .fx .val { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
-  .fx .note { font-size: 11px; color: var(--muted); }
-  .fx.warn .val { color: var(--red); }
-  .fx.good .val { color: var(--green); }
-  .strategy-card { background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
-  .strategy-card.p1 { border-left-color: var(--red); }
-  .strategy-card.p2 { border-left-color: var(--green); }
-  .strategy-card.p3 { border-left-color: var(--yellow); }
-  .strategy-card .ptitle { font-weight: 700; color: var(--primary); margin-bottom: 6px; font-size: 15px; }
-  .strategy-card p { margin: 4px 0; font-size: 13px; }
-  .motto { text-align: center; font-size: 17px; font-weight: 700; color: var(--primary); padding: 20px; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 10px; margin: 24px 0; }
-  .sources { background: var(--soft); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 13px; }
-  .sources h3 { margin-top: 0; }
-  .sources a { color: var(--accent); text-decoration: none; }
-  .sources a:hover { text-decoration: underline; }
-  .footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px 0; border-top: 1px solid var(--border); margin-top: 30px; }
-  .archive-nav { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-  .archive-nav .label { font-size: 13px; color: var(--muted); font-weight: 600; }
-  .archive-nav a { background: var(--soft); color: var(--primary); padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; border: 1px solid var(--border); }
-  .archive-nav a:hover { background: var(--accent); color: white; border-color: var(--accent); }
-  .archive-nav a.today { background: var(--accent); color: white; border-color: var(--accent); }
-  .archive-nav a.all { background: var(--primary); color: white; border-color: var(--primary); }
-  .ncdex-box { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 2px solid #fb923c; border-radius: 10px; padding: 14px 18px; margin: 14px 0; }
-  .ncdex-box .ntitle { font-weight: 700; color: #c2410c; margin-bottom: 8px; font-size: 14px; }
-  .ncdex-box table { margin: 6px 0; font-size: 13px; }
-  .ncdex-box th { background: #fed7aa; color: #7c2d12; }
-  .ncdex-box a { color: #c2410c; font-weight: 600; text-decoration: none; margin-right: 12px; display: inline-block; margin-top: 6px; font-size: 13px; }
-  .ncdex-box a:hover { text-decoration: underline; }
-  .ncdex-chart { background:#fff; border:1px solid #fed7aa; border-radius:8px; padding:12px 14px; margin:12px 0; }
-  .ncdex-chart .nct { font-weight:700; color:#c2410c; font-size:13px; margin-bottom:2px; }
-  .ncdex-chart .ncs { font-size:11px; color:#9a3412; margin-bottom:6px; }
-  .ncdex-chart .ncn { font-size:11px; color:#9a3412; margin:4px 0 0; }
+:root{--bg:#f5f7fa;--card:#fff;--primary:#1e3a5f;--accent:#2563eb;--text:#1f2937;--muted:#6b7280;--green:#16a34a;--yellow:#d97706;--red:#dc2626;--border:#e5e7eb;--soft:#f1f5f9}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.6;padding:24px 16px}
+.container{max-width:980px;margin:0 auto}
+h1{font-size:28px;color:var(--primary);border-bottom:3px solid var(--accent);padding-bottom:12px;margin-bottom:8px}
+h2{font-size:20px;color:var(--primary);margin-top:36px;padding-left:10px;border-left:4px solid var(--accent)}
+h3{font-size:16px;color:var(--primary);margin-top:18px;margin-bottom:8px}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}
+.meta b{color:var(--text)}
+.headline{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;padding:22px 24px;border-radius:12px;margin:16px 0 24px;box-shadow:0 4px 12px rgba(30,58,95,.15)}
+.headline h2{color:#fff;border:none;padding:0;margin:0 0 8px;font-size:16px;opacity:.9}
+.headline p{margin:0;font-size:15px;line-height:1.7}
+.headline strong{color:#fde047}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.kpi .label{color:var(--muted);font-size:12px;margin-bottom:6px}
+.kpi .price{font-size:18px;font-weight:700;color:var(--primary);margin-bottom:8px}
+.kpi .changes{display:flex;gap:8px;font-size:11px;color:var(--muted);margin-bottom:6px;flex-wrap:wrap}
+.kpi .changes span{background:var(--soft);padding:2px 8px;border-radius:4px}
+.kpi .signal{font-size:13px;font-weight:600;padding:4px 10px;border-radius:6px;display:inline-block}
+.signal-buy{background:#dcfce7;color:var(--green)}
+.signal-hold{background:#fef3c7;color:var(--yellow)}
+.signal-lock{background:#fee2e2;color:var(--red)}
+.reference{background:var(--soft);border-radius:8px;padding:14px 18px;font-size:13px;margin:16px 0 24px;color:var(--muted)}
+.reference b{color:var(--primary)}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.chart-card .ctitle{font-weight:600;color:var(--primary);margin-bottom:4px}
+.chart-card .csub{font-size:12px;color:var(--muted);margin-bottom:8px}
+.detail{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.detail h3{margin-top:0}
+.detail ul{padding-left:20px;margin:6px 0}
+.detail li{margin-bottom:4px;font-size:14px}
+.comment{background:#eff6ff;border-left:4px solid var(--accent);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px}
+.comment.urgent{background:#fef2f2;border-left-color:var(--red)}
+.comment.hold{background:#fffbeb;border-left-color:var(--yellow)}
+.comment.buy{background:#f0fdf4;border-left-color:var(--green)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--soft);color:var(--primary);font-weight:600}
+tr.highlight td{background:#fffbeb;font-weight:700}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0}
+.fx{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.fx .pair{font-size:12px;color:var(--muted);margin-bottom:4px}
+.fx .val{font-size:18px;font-weight:700;color:var(--primary);margin-bottom:4px}
+.fx .note{font-size:11px;color:var(--muted)}
+.fx.warn .val{color:var(--red)}
+.fx.good .val{color:var(--green)}
+.strategy-card{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:8px;padding:16px 20px;margin:10px 0}
+.strategy-card.p1{border-left-color:var(--red)}
+.strategy-card.p2{border-left-color:var(--green)}
+.strategy-card.p3{border-left-color:var(--yellow)}
+.strategy-card .ptitle{font-weight:700;color:var(--primary);margin-bottom:6px;font-size:15px}
+.strategy-card p{margin:4px 0;font-size:13px}
+.motto{text-align:center;font-size:17px;font-weight:700;color:var(--primary);padding:20px;background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%);border-radius:10px;margin:24px 0}
+.sources{background:var(--soft);border-radius:8px;padding:16px 20px;margin:20px 0;font-size:13px}
+.sources h3{margin-top:0}
+.sources a{color:var(--accent);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:20px 0;border-top:1px solid var(--border);margin-top:30px}
+.archive-nav{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.archive-nav .label{font-size:13px;color:var(--muted);font-weight:600}
+.archive-nav a{background:var(--soft);color:var(--primary);padding:6px 12px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;border:1px solid var(--border)}
+.archive-nav a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.archive-nav a.today{background:var(--accent);color:#fff;border-color:var(--accent)}
+.archive-nav a.all{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ncdex-box{background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);border:2px solid #fb923c;border-radius:10px;padding:14px 18px;margin:14px 0}
+.ncdex-box .ntitle{font-weight:700;color:#c2410c;margin-bottom:8px;font-size:14px}
+.ncdex-box table{margin:6px 0;font-size:13px}
+.ncdex-box th{background:#fed7aa;color:#7c2d12}
+.ncdex-box a{color:#c2410c;font-weight:600;text-decoration:none;margin-right:12px;display:inline-block;margin-top:6px;font-size:13px}
+.ncdex-chart{background:#fff;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;margin:12px 0}
+.ncdex-chart .nct{font-weight:700;color:#c2410c;font-size:13px;margin-bottom:2px}
+.ncdex-chart .ncs{font-size:11px;color:#9a3412;margin-bottom:6px}
+.ncdex-chart .ncn{font-size:11px;color:#9a3412;margin:4px 0 0}
 </style>
 </head>
 <body>
 <div class="container">
-
-  <h1>📊 세우(주) 원자재 4종 일일 시세 리포트</h1>
-  <div class="meta">📅 <b>2026-05-14 (목)</b> &nbsp;|&nbsp; 📊 데이터 기준: 2026-05-13 종가 &nbsp;|&nbsp; 👤 구매팀 민수님</div>
-
-  <div class="archive-nav">
-    <span class="label">🗓️ 일자별 리포트:</span>
-    <a href="./index.html" class="today">📅 오늘 (05-14)</a>
-    <a href="./archive/2026-05-13.html">05-13 (수)</a>
-    <a href="./archive/2026-05-12.html">05-12 (화)</a>
-    <a href="./archive/2026-05-11.html">05-11 (월)</a>
-    <a href="./archive/2026-05-08.html">05-08 (금)</a>
-    <a href="./archive/2026-05-07.html">05-07 (목)</a>
-    <a href="./archive/index.html" class="all">📚 전체 아카이브</a>
-  </div>
-
-  <div class="headline">
-    <h2>🔔 오늘의 헤드라인</h2>
-    <p><strong>타피오카 전분이 한 주 새 +$25/MT (+4.3%)</strong> 추가 급등해 <strong>$605/MT 돌파</strong>, 6주 누적 +15%로 가장 강한 매수 시그널이에요. 동시에 <strong>원화가 1,488원/USD까지 약세</strong>, <strong>BDI는 3,189pt로 2023년 11월 이래 최고치(+35% MoM)</strong> — 수입 원가 압박이 삼중으로 들어오고 있어요. <strong>타피오카는 즉시 락인, SBM은 분할 진입, 옥수수·감자는 관망</strong>이 오늘의 핵심입니다.</p>
-  </div>
-
-  <h2>KPI 요약 (FOB / USD/MT)</h2>
-  <div class="grid">
-    <div class="kpi">
-      <div class="label">🇮🇳 인도산 SBM 48% Hipro</div>
-      <div class="price">$465~480 /MT</div>
-      <div class="changes"><span>일 -0.3%</span><span>주 -1.0%</span><span>월 -2.5%</span></div>
-      <div class="signal signal-buy">🟢 분할 매수</div>
-    </div>
-    <div class="kpi">
-      <div class="label">🇫🇷 프랑스산 옥수수 (Bordeaux/Rouen)</div>
-      <div class="price">$235~248 /MT <span style="font-size:12px;color:var(--muted)">(€201~212)</span></div>
-      <div class="changes"><span>일 +0.4%</span><span>주 +1.2%</span><span>월 +2.0%</span></div>
-      <div class="signal signal-hold">🟡 관망</div>
-    </div>
-    <div class="kpi">
-      <div class="label">🇺🇸 미국산 감자 Russet Norkotah</div>
-      <div class="price">$420~460 /MT <span style="font-size:12px;color:var(--muted)">(가공 환산)</span></div>
-      <div class="changes"><span>일 보합</span><span>주 +1.5%</span><span>월 +3.5%</span></div>
-      <div class="signal signal-hold">🟡 관망</div>
-    </div>
-    <div class="kpi">
-      <div class="label">🇹🇭 태국산 타피오카 전분 (FOB Bangkok)</div>
-      <div class="price">$605 /MT <span style="font-size:12px;color:var(--muted)">(Native)</span></div>
-      <div class="changes"><span>일 +0.8%</span><span>주 +4.3%</span><span>월 +12.0%</span></div>
-      <div class="signal signal-lock">🔴 즉시 락인</div>
-    </div>
-  </div>
-
-  <div class="reference">
-    <b>참고지표 →</b> CBOT SBM 5월물: <b>$314.75</b>/short ton &nbsp;|&nbsp; BDI: <b>3,189 pt</b> (+4.11% D, +35% M, +151% Y) &nbsp;|&nbsp; USD/KRW: <b>₩1,488.54</b> &nbsp;|&nbsp; EUR/USD: <b>1.171</b> &nbsp;|&nbsp; USD/INR: <b>₹95.65</b> &nbsp;|&nbsp; USD/THB: <b>฿31.77</b>
-  </div>
-
-  <h2>📈 1년치 시세 추이 (2025-05 ~ 2026-05)</h2>
-
-  <div class="chart-card">
-    <div class="ctitle">🇮🇳 인도산 SBM 48% Hipro 월평균 추정</div>
-    <div class="csub">단위: USD/MT (FOB Kandla/Mundra)</div>
-    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="65" x2="700" y2="65" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="110" x2="700" y2="110" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="155" x2="700" y2="155" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24" font-size="11" fill="#6b7280">$500</text>
-      <text x="10" y="69" font-size="11" fill="#6b7280">$490</text>
-      <text x="10" y="114" font-size="11" fill="#6b7280">$480</text>
-      <text x="10" y="159" font-size="11" fill="#6b7280">$470</text>
-      <text x="10" y="184" font-size="11" fill="#6b7280">$460</text>
-      <polyline fill="none" stroke="#2563eb" stroke-width="2.5" points="50,158 104,135 158,113 212,90 266,99 320,113 374,99 428,81 482,68 536,45 590,23 644,54 698,126"/>
-      <circle cx="698" cy="126" r="5" fill="#dc2626"/>
-      <text x="640" y="150" font-size="12" font-weight="bold" fill="#dc2626">$472</text>
-      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
-      <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
-      <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
-      <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
-      <text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
-      <text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
-      <text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
-    </svg>
-  </div>
-
-  <div class="chart-card">
-    <div class="ctitle">🇫🇷 프랑스산 옥수수 월평균 추정</div>
-    <div class="csub">단위: USD/MT (FOB Bordeaux/Rouen)</div>
-    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24" font-size="11" fill="#6b7280">$250</text>
-      <text x="10" y="64" font-size="11" fill="#6b7280">$240</text>
-      <text x="10" y="104" font-size="11" fill="#6b7280">$230</text>
-      <text x="10" y="144" font-size="11" fill="#6b7280">$220</text>
-      <text x="10" y="184" font-size="11" fill="#6b7280">$210</text>
-      <polyline fill="none" stroke="#16a34a" stroke-width="2.5" points="50,160 104,148 158,140 212,120 266,108 320,100 374,92 428,80 482,68 536,68 590,60 644,56 698,52"/>
-      <circle cx="698" cy="52" r="5" fill="#16a34a"/>
-      <text x="640" y="42" font-size="12" font-weight="bold" fill="#16a34a">$242</text>
-      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
-      <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
-      <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
-      <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
-      <text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
-      <text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
-      <text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
-    </svg>
-  </div>
-
-  <div class="chart-card">
-    <div class="ctitle">🇺🇸 미국산 감자 (Russet) 월평균 추정</div>
-    <div class="csub">단위: USD/MT (Frozen Fry급 raw FOB equivalent)</div>
-    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24" font-size="11" fill="#6b7280">$450</text>
-      <text x="10" y="64" font-size="11" fill="#6b7280">$430</text>
-      <text x="10" y="104" font-size="11" fill="#6b7280">$410</text>
-      <text x="10" y="144" font-size="11" fill="#6b7280">$390</text>
-      <text x="10" y="184" font-size="11" fill="#6b7280">$370</text>
-      <polyline fill="none" stroke="#d97706" stroke-width="2.5" points="50,180 104,160 158,150 212,140 266,130 320,120 374,100 428,90 482,80 536,70 590,64 644,60 698,40"/>
-      <circle cx="698" cy="40" r="5" fill="#d97706"/>
-      <text x="640" y="30" font-size="12" font-weight="bold" fill="#d97706">$440</text>
-      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
-      <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
-      <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
-      <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
-      <text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
-      <text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
-      <text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
-    </svg>
-  </div>
-
-  <div class="chart-card">
-    <div class="ctitle">🇹🇭 태국산 타피오카 전분 TTSA 실측</div>
-    <div class="csub">단위: USD/MT (FOB Bangkok, Native) — 가장 강한 상승 추세 ⚠️</div>
-    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-      <line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb" stroke-width="1"/>
-      <line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="10" y="24" font-size="11" fill="#6b7280">$610</text>
-      <text x="10" y="64" font-size="11" fill="#6b7280">$560</text>
-      <text x="10" y="104" font-size="11" fill="#6b7280">$510</text>
-      <text x="10" y="144" font-size="11" fill="#6b7280">$460</text>
-      <text x="10" y="184" font-size="11" fill="#6b7280">$420</text>
-      <polyline fill="none" stroke="#dc2626" stroke-width="2.5" points="50,176 104,164 158,152 212,144 266,136 320,128 374,124 428,132 482,132 536,124 590,108 644,72 698,32"/>
-      <circle cx="698" cy="32" r="6" fill="#dc2626"/>
-      <text x="635" y="22" font-size="13" font-weight="bold" fill="#dc2626">$605 ⚠️</text>
-      <text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
-      <text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
-      <text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
-      <text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
-      <text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
-      <text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
-      <text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
-    </svg>
-  </div>
-
-  <p style="font-size:13px;color:var(--muted);background:var(--soft);padding:12px 16px;border-radius:8px;">📊 <b>차트 데이터 안내:</b> 타피오카는 TTSA 공식 + 2025년 추정 보강. 나머지 3종은 공개 벤치마크(CBOT, MATIF, USDA) 기반 월평균 추정. <b>매일 자동 누적되면서 정확해져요.</b></p>
-
-  <h2>품목별 상세 분석</h2>
-
-  <div class="detail">
-    <h3>1️⃣ 🇮🇳 인도산 탈지대두박 (SBM 48% Hipro)</h3>
-    <p><b>현재 시세 (FOB Kandla/Mundra):</b> $465~480 /MT (추정)</p>
-    <ul>
-      <li>CBOT SBM 5월물 환산: $314.75/short ton ≈ <b>$347/MT</b> (52주 범위 $266.50~$335.50)</li>
-      <li>CBOT 일봉·시간봉 모두 <b>Strong Sell</b>, 정점 대비 -6%</li>
-    </ul>
-    <p style="margin-top:12px"><b>변동 요인</b></p>
-    <ul>
-      <li>(-) USDA: 2026년 미국 농가 <b>대두 식부면적 확대</b> 발표 (옥수수 감소)</li>
-      <li>(-) 인도 SBM 3월 수출 <b>-63%</b> (서아시아 분쟁) → 국내 재고 과잉</li>
-      <li>(+) <b>이란 사태로 비료·운임 동반 상승</b> (BDI +35% MoM)</li>
-      <li>(+) 인도 SOPA 2025/26 생산량 1,100만 톤 (전년比 감소 가능)</li>
-    </ul>
-
-    <div class="ncdex-box">
-      <div class="ntitle">📊 NCDEX 인도 현물 지표 (FOB 선행지표)</div>
-      <table>
-        <tr><th>지표</th><th>최근가</th><th>환산 (USD/MT)</th><th>비고</th></tr>
-        <tr><td><b>NCDEX Spot — Hipro SBM Indore</b></td><td>₹39,200/MT</td><td>$410 /MT</td><td>2차장 종가 추정</td></tr>
-        <tr><td>NCDEX SBMEALIDR 선물</td><td>거래 정지 (~26.03.31)</td><td>—</td><td>현물만 참조</td></tr>
-        <tr><td>NCDEX Soybean (콩) Indore</td><td>₹4,850/Q</td><td>$507 /MT</td><td>가공 마진 압박</td></tr>
-        <tr><td>NCDEX SOYDEX 지수</td><td>1,218 pt (추정)</td><td>—</td><td>3종 종합</td></tr>
-      </table>
-
-      <div class="ncdex-chart">
-        <div class="nct">📈 NCDEX Hipro SBM Indore 월별 현물가 (INR/MT)</div>
-        <div class="ncs">2025-05 ~ 2026-05 · 좌측 INR/MT · 우측 USD/MT 환산 (점선)</div>
-        <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <line x1="60" y1="20" x2="660" y2="20" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="65" x2="660" y2="65" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="110" x2="660" y2="110" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="155" x2="660" y2="155" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="200" x2="660" y2="200" stroke="#fb923c" stroke-width="1.5"/>
-          <text x="6" y="24" font-size="11" fill="#9a3412">₹40k</text>
-          <text x="6" y="69" font-size="11" fill="#9a3412">₹38.5k</text>
-          <text x="6" y="114" font-size="11" fill="#9a3412">₹37k</text>
-          <text x="6" y="159" font-size="11" fill="#9a3412">₹35.5k</text>
-          <text x="6" y="204" font-size="11" fill="#9a3412">₹34k</text>
-          <text x="665" y="24" font-size="11" fill="#2563eb">$445</text>
-          <text x="665" y="69" font-size="11" fill="#2563eb">$425</text>
-          <text x="665" y="114" font-size="11" fill="#2563eb">$410</text>
-          <text x="665" y="159" font-size="11" fill="#2563eb">$395</text>
-          <text x="665" y="204" font-size="11" fill="#2563eb">$380</text>
-          <polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,215 110,200 160,185 210,170 260,164 310,146 360,125 410,110 460,95 510,74 560,50 610,35 660,44"/>
-          <circle cx="60" cy="215" r="3" fill="#c2410c"/>
-          <circle cx="110" cy="200" r="3" fill="#c2410c"/>
-          <circle cx="160" cy="185" r="3" fill="#c2410c"/>
-          <circle cx="210" cy="170" r="3" fill="#c2410c"/>
-          <circle cx="260" cy="164" r="3" fill="#c2410c"/>
-          <circle cx="310" cy="146" r="3" fill="#c2410c"/>
-          <circle cx="360" cy="125" r="3" fill="#c2410c"/>
-          <circle cx="410" cy="110" r="3" fill="#c2410c"/>
-          <circle cx="460" cy="95" r="3" fill="#c2410c"/>
-          <circle cx="510" cy="74" r="3" fill="#c2410c"/>
-          <circle cx="560" cy="50" r="3" fill="#c2410c"/>
-          <circle cx="610" cy="35" r="3" fill="#c2410c"/>
-          <circle cx="660" cy="44" r="6" fill="#dc2626" stroke="#fff" stroke-width="2"/>
-          <polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3" points="60,113 110,119 160,110 210,95 260,92 310,80 360,65 410,56 460,50 510,35 560,20 610,44 660,113"/>
-          <text x="610" y="62" font-size="12" font-weight="bold" fill="#dc2626">₹39.2k</text>
-          <text x="610" y="135" font-size="11" font-weight="bold" fill="#2563eb">$410</text>
-          <text x="50" y="232" font-size="10" fill="#9a3412">25.05</text>
-          <text x="155" y="232" font-size="10" fill="#9a3412">25.07</text>
-          <text x="255" y="232" font-size="10" fill="#9a3412">25.09</text>
-          <text x="355" y="232" font-size="10" fill="#9a3412">25.11</text>
-          <text x="455" y="232" font-size="10" fill="#9a3412">26.01</text>
-          <text x="555" y="232" font-size="10" fill="#9a3412">26.03</text>
-          <text x="645" y="232" font-size="10" fill="#9a3412">26.05</text>
-          <rect x="60" y="6" width="14" height="3" fill="#c2410c"/>
-          <text x="78" y="12" font-size="10" fill="#c2410c">INR/MT</text>
-          <line x1="140" y1="8" x2="154" y2="8" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
-          <text x="158" y="12" font-size="10" fill="#2563eb">USD/MT (환율 반영)</text>
-        </svg>
-        <p class="ncn"><b>분석:</b> INR 기준 12개월 +17.0% 상승, 그러나 <b>4월 이후 INR 약세로 USD 환산은 다시 $410선까지 하락</b>. 이게 인도 SBM FOB가 약세를 띠는 핵심 원인이에요.</p>
-      </div>
-
-      <div class="ncdex-chart">
-        <div class="nct">📊 NCDEX SOYDEX 지수 (콩·SBM·SOIL 종합)</div>
-        <div class="ncs">베이스 1,000 기준 · 인도 대두 생태계 종합 모니터링</div>
-        <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <line x1="60" y1="20" x2="680" y2="20" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="60" x2="680" y2="60" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="100" x2="680" y2="100" stroke="#fed7aa" stroke-width="1"/>
-          <line x1="60" y1="140" x2="680" y2="140" stroke="#fb923c" stroke-width="1.5"/>
-          <text x="6" y="24" font-size="11" fill="#9a3412">1,260</text>
-          <text x="6" y="64" font-size="11" fill="#9a3412">1,200</text>
-          <text x="6" y="104" font-size="11" fill="#9a3412">1,140</text>
-          <text x="6" y="144" font-size="11" fill="#9a3412">1,080</text>
-          <polyline fill="#fdba74" fill-opacity="0.25" stroke="none" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48 670,140 60,140"/>
-          <polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48"/>
-          <circle cx="670" cy="48" r="5" fill="#dc2626" stroke="#fff" stroke-width="2"/>
-          <text x="620" y="38" font-size="12" font-weight="bold" fill="#dc2626">1,218 pt</text>
-          <text x="50" y="170" font-size="10" fill="#9a3412">25.05</text>
-          <text x="155" y="170" font-size="10" fill="#9a3412">25.07</text>
-          <text x="255" y="170" font-size="10" fill="#9a3412">25.09</text>
-          <text x="355" y="170" font-size="10" fill="#9a3412">25.11</text>
-          <text x="455" y="170" font-size="10" fill="#9a3412">26.01</text>
-          <text x="555" y="170" font-size="10" fill="#9a3412">26.03</text>
-          <text x="650" y="170" font-size="10" fill="#9a3412">26.05</text>
-        </svg>
-        <p class="ncn"><b>SOYDEX 12개월 +11.2%</b> — 인도 대두 생태계 전반 강세. 다만 5월 들어 정점 대비 -1.4% 조정 신호.</p>
-      </div>
-
-      <p style="font-size:12px;color:#7c2d12;margin:6px 0">※ NCDEX 현물가에 FOB 프리미엄 + 항구 운송비(약 $50~70/MT) 가산 시 Kandla/Mundra FOB 환산. 인도 SBM 수출 FOB의 <b>선행지표</b>로 활용.</p>
-      <a href="https://www.ncdex.com/products/SBMEALIDR" target="_blank">🔗 SBMEALIDR</a>
-      <a href="https://www.ncdex.com/products/SYBEANIDR" target="_blank">🔗 SYBEANIDR (콩)</a>
-      <a href="https://ncdex.com/products/SOYDEX" target="_blank">🔗 SOYDEX 지수</a>
-      <a href="https://www.ncdex.com/market-data/spot-prices" target="_blank">🔗 NCDEX Spot</a>
-      <a href="https://www.ceicdata.com/en/india/commodities-spot-price-national-commodity--derivatives-exchange-limited/ncdex-spot-price-soybean-meal-hipro-indore-second-session" target="_blank">🔗 CEIC Historical</a>
-    </div>
-
-    <div class="comment buy">
-      💬 <b>구매 관
+<h1>📊 세우(주) 원자재 4종 일일 시세 리포트</h1>
+<div class="meta">📅 <b>2026-05-14 (목)</b> &nbsp;|&nbsp; 📊 데이터 기준: 2026-05-13 종가 &nbsp;|&nbsp; 👤 구매팀 민수님</div>
+<div class="archive-nav"><span class="label">🗓️ 일자별 리포트:</span>
+<a href="./index.html" class="today">📅 오늘 (05-14)</a>
+<a href="./archive/2026-05-13.html">05-13 (수)</a>
+<a href="./archive/2026-05-12.html">05-12 (화)</a>
+<a href="./archive/2026-05-11.html">05-11 (월)</a>
+<a href="./archive/2026-05-08.html">05-08 (금)</a>
+<a href="./archive/2026-05-07.html">05-07 (목)</a>
+<a href="./archive/index.html" class="all">📚 전체 아카이브</a></div>
+<div class="headline"><h2>🔔 오늘의 헤드라인</h2><p><strong>타피오카 전분이 한 주 새 +$25/MT (+4.3%)</strong> 추가 급등해 <strong>$605/MT 돌파</strong>, 6주 누적 +15%로 가장 강한 매수 시그널이에요. 동시에 <strong>원화가 1,488원/USD까지 약세</strong>, <strong>BDI는 3,189pt로 2023년 11월 이래 최고치(+35% MoM)</strong> — 수입 원가 압박이 삼중으로 들어오고 있어요. <strong>타피오카는 즉시 락인, SBM은 분할 진입, 옥수수·감자는 관망</strong>이 오늘의 핵심입니다.</p></div>
+<h2>KPI 요약 (FOB / USD/MT)</h2>
+<div class="grid">
+<div class="kpi"><div class="label">🇮🇳 인도산 SBM 48% Hipro</div><div class="price">$465~480 /MT</div><div class="changes"><span>일 -0.3%</span><span>주 -1.0%</span><span>월 -2.5%</span></div><div class="signal signal-buy">🟢 분할 매수</div></div>
+<div class="kpi"><div class="label">🇫🇷 프랑스산 옥수수 (Bordeaux/Rouen)</div><div class="price">$235~248 /MT</div><div class="changes"><span>일 +0.4%</span><span>주 +1.2%</span><span>월 +2.0%</span></div><div class="signal signal-hold">🟡 관망</div></div>
+<div class="kpi"><div class="label">🇺🇸 미국산 감자 Russet Norkotah</div><div class="price">$420~460 /MT</div><div class="changes"><span>일 보합</span><span>주 +1.5%</span><span>월 +3.5%</span></div><div class="signal signal-hold">🟡 관망</div></div>
+<div class="kpi"><div class="label">🇹🇭 태국산 타피오카 전분 (FOB Bangkok)</div><div class="price">$605 /MT</div><div class="changes"><span>일 +0.8%</span><span>주 +4.3%</span><span>월 +12.0%</span></div><div class="signal signal-lock">🔴 즉시 락인</div></div>
+</div>
+<div class="reference"><b>참고지표 →</b> CBOT SBM 5월물: <b>$314.75</b>/short ton &nbsp;|&nbsp; BDI: <b>3,189 pt</b> (+4.11% D, +35% M, +151% Y) &nbsp;|&nbsp; USD/KRW: <b>₩1,488.54</b> &nbsp;|&nbsp; EUR/USD: <b>1.171</b> &nbsp;|&nbsp; USD/INR: <b>₹95.65</b> &nbsp;|&nbsp; USD/THB: <b>฿31.77</b></div>
+<h2>📈 1년치 시세 추이 (2025-05 ~ 2026-05)</h2>
+<div class="chart-card">
+<div class="ctitle">🇮🇳 인도산 SBM 48% Hipro 월평균 추정</div>
+<div class="csub">단위: USD/MT (FOB Kandla/Mundra)</div>
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb"/>
+<line x1="50" y1="65" x2="700" y2="65" stroke="#e5e7eb"/>
+<line x1="50" y1="110" x2="700" y2="110" stroke="#e5e7eb"/>
+<line x1="50" y1="155" x2="700" y2="155" stroke="#e5e7eb"/>
+<line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="10" y="24" font-size="11" fill="#6b7280">$500</text>
+<text x="10" y="69" font-size="11" fill="#6b7280">$490</text>
+<text x="10" y="114" font-size="11" fill="#6b7280">$480</text>
+<text x="10" y="159" font-size="11" fill="#6b7280">$470</text>
+<text x="10" y="184" font-size="11" fill="#6b7280">$460</text>
+<polyline fill="none" stroke="#2563eb" stroke-width="2.5" points="50,158 104,135 158,113 212,90 266,99 320,113 374,99 428,81 482,68 536,45 590,23 644,54 698,126"/>
+<circle cx="698" cy="126" r="5" fill="#dc2626"/>
+<text x="640" y="150" font-size="12" font-weight="bold" fill="#dc2626">$472</text>
+<text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
+<text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
+<text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
+<text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
+<text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
+<text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
+<text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
+</svg>
+</div>
+<div class="chart-card">
+<div class="ctitle">🇫🇷 프랑스산 옥수수 월평균 추정</div>
+<div class="csub">단위: USD/MT (FOB Bordeaux/Rouen)</div>
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb"/>
+<line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb"/>
+<line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb"/>
+<line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb"/>
+<line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="10" y="24" font-size="11" fill="#6b7280">$250</text>
+<text x="10" y="64" font-size="11" fill="#6b7280">$240</text>
+<text x="10" y="104" font-size="11" fill="#6b7280">$230</text>
+<text x="10" y="144" font-size="11" fill="#6b7280">$220</text>
+<text x="10" y="184" font-size="11" fill="#6b7280">$210</text>
+<polyline fill="none" stroke="#16a34a" stroke-width="2.5" points="50,160 104,148 158,140 212,120 266,108 320,100 374,92 428,80 482,68 536,68 590,60 644,56 698,52"/>
+<circle cx="698" cy="52" r="5" fill="#16a34a"/>
+<text x="640" y="42" font-size="12" font-weight="bold" fill="#16a34a">$242</text>
+<text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
+<text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
+<text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
+<text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
+<text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
+<text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
+<text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
+</svg>
+</div>
+<div class="chart-card">
+<div class="ctitle">🇺🇸 미국산 감자 (Russet) 월평균 추정</div>
+<div class="csub">단위: USD/MT (Frozen Fry급 raw FOB equivalent)</div>
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb"/>
+<line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb"/>
+<line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb"/>
+<line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb"/>
+<line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="10" y="24" font-size="11" fill="#6b7280">$450</text>
+<text x="10" y="64" font-size="11" fill="#6b7280">$430</text>
+<text x="10" y="104" font-size="11" fill="#6b7280">$410</text>
+<text x="10" y="144" font-size="11" fill="#6b7280">$390</text>
+<text x="10" y="184" font-size="11" fill="#6b7280">$370</text>
+<polyline fill="none" stroke="#d97706" stroke-width="2.5" points="50,180 104,160 158,150 212,140 266,130 320,120 374,100 428,90 482,80 536,70 590,64 644,60 698,40"/>
+<circle cx="698" cy="40" r="5" fill="#d97706"/>
+<text x="640" y="30" font-size="12" font-weight="bold" fill="#d97706">$440</text>
+<text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
+<text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
+<text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
+<text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
+<text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
+<text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
+<text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
+</svg>
+</div>
+<div class="chart-card">
+<div class="ctitle">🇹🇭 태국산 타피오카 전분 TTSA 실측</div>
+<div class="csub">단위: USD/MT (FOB Bangkok, Native) — 가장 강한 상승 추세 ⚠️</div>
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="50" y1="20" x2="700" y2="20" stroke="#e5e7eb"/>
+<line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb"/>
+<line x1="50" y1="100" x2="700" y2="100" stroke="#e5e7eb"/>
+<line x1="50" y1="140" x2="700" y2="140" stroke="#e5e7eb"/>
+<line x1="50" y1="180" x2="700" y2="180" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="10" y="24" font-size="11" fill="#6b7280">$610</text>
+<text x="10" y="64" font-size="11" fill="#6b7280">$560</text>
+<text x="10" y="104" font-size="11" fill="#6b7280">$510</text>
+<text x="10" y="144" font-size="11" fill="#6b7280">$460</text>
+<text x="10" y="184" font-size="11" fill="#6b7280">$420</text>
+<polyline fill="none" stroke="#dc2626" stroke-width="2.5" points="50,176 104,164 158,152 212,144 266,136 320,128 374,124 428,132 482,132 536,124 590,108 644,72 698,32"/>
+<circle cx="698" cy="32" r="6" fill="#dc2626"/>
+<text x="635" y="22" font-size="13" font-weight="bold" fill="#dc2626">$605 ⚠️</text>
+<text x="46" y="205" font-size="10" fill="#6b7280">25.05</text>
+<text x="155" y="205" font-size="10" fill="#6b7280">25.07</text>
+<text x="263" y="205" font-size="10" fill="#6b7280">25.09</text>
+<text x="371" y="205" font-size="10" fill="#6b7280">25.11</text>
+<text x="479" y="205" font-size="10" fill="#6b7280">26.01</text>
+<text x="587" y="205" font-size="10" fill="#6b7280">26.03</text>
+<text x="678" y="205" font-size="10" fill="#6b7280">26.05</text>
+</svg>
+</div>
+<h2>품목별 상세 분석</h2>
+<div class="detail">
+<h3>1️⃣ 🇮🇳 인도산 탈지대두박 (SBM 48% Hipro)</h3>
+<p><b>현재 시세 (FOB Kandla/Mundra):</b> $465~480 /MT (추정)</p>
+<ul>
+<li>CBOT SBM 5월물 환산: $314.75/short ton ≈ <b>$347/MT</b> (52주 범위 $266.50~$335.50)</li>
+<li>CBOT 일봉·시간봉 모두 <b>Strong Sell</b>, 정점 대비 -6%</li>
+</ul>
+<p style="margin-top:12px"><b>변동 요인</b></p>
+<ul>
+<li>(-) USDA: 2026년 미국 농가 <b>대두 식부면적 확대</b> 발표 (옥수수 감소)</li>
+<li>(-) 인도 SBM 3월 수출 <b>-63%</b> (서아시아 분쟁) → 국내 재고 과잉</li>
+<li>(+) <b>이란 사태로 비료·운임 동반 상승</b> (BDI +35% MoM)</li>
+<li>(+) 인도 SOPA 2025/26 생산량 1,100만 톤 (전년比 감소 가능)</li>
+</ul>
+<div class="ncdex-box">
+<div class="ntitle">📊 NCDEX 인도 현물 지표 (FOB 선행지표)</div>
+<table>
+<tr><th>지표</th><th>최근가</th><th>환산 (USD/MT)</th><th>비고</th></tr>
+<tr><td><b>NCDEX Spot — Hipro SBM Indore</b></td><td>₹39,200/MT</td><td>$410 /MT</td><td>2차장 종가 추정</td></tr>
+<tr><td>NCDEX SBMEALIDR 선물</td><td>거래 정지 (~26.03.31)</td><td>—</td><td>현물만 참조</td></tr>
+<tr><td>NCDEX Soybean (콩) Indore</td><td>₹4,850/Q</td><td>$507 /MT</td><td>가공 마진 압박</td></tr>
+<tr><td>NCDEX SOYDEX 지수</td><td>1,218 pt (추정)</td><td>—</td><td>3종 종합</td></tr>
+</table>
+<div class="ncdex-chart">
+<div class="nct">📈 NCDEX Hipro SBM Indore 월별 현물가</div>
+<div class="ncs">2025-05 ~ 2026-05 · 실선 INR/MT · 점선 USD/MT 환산</div>
+<svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="60" y1="20" x2="660" y2="20" stroke="#fed7aa"/>
+<line x1="60" y1="65" x2="660" y2="65" stroke="#fed7aa"/>
+<line x1="60" y1="110" x2="660" y2="110" stroke="#fed7aa"/>
+<line x1="60" y1="155" x2="660" y2="155" stroke="#fed7aa"/>
+<line x1="60" y1="200" x2="660" y2="200" stroke="#fb923c" stroke-width="1.5"/>
+<text x="6" y="24" font-size="11" fill="#9a3412">₹40k</text>
+<text x="6" y="69" font-size="11" fill="#9a3412">₹38.5k</text>
+<text x="6" y="114" font-size="11" fill="#9a3412">₹37k</text>
+<text x="6" y="159" font-size="11" fill="#9a3412">₹35.5k</text>
+<text x="6" y="204" font-size="11" fill="#9a3412">₹34k</text>
+<text x="665" y="24" font-size="11" fill="#2563eb">$445</text>
+<text x="665" y="69" font-size="11" fill="#2563eb">$425</text>
+<text x="665" y="114" font-size="11" fill="#2563eb">$410</text>
+<text x="665" y="159" font-size="11" fill="#2563eb">$395</text>
+<text x="665" y="204" font-size="11" fill="#2563eb">$380</text>
+<polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,215 110,200 160,185 210,170 260,164 310,146 360,125 410,110 460,95 510,74 560,50 610,35 660,44"/>
+<circle cx="60" cy="215" r="3" fill="#c2410c"/>
+<circle cx="110" cy="200" r="3" fill="#c2410c"/>
+<circle cx="160" cy="185" r="3" fill="#c2410c"/>
+<circle cx="210" cy="170" r="3" fill="#c2410c"/>
+<circle cx="260" cy="164" r="3" fill="#c2410c"/>
+<circle cx="310" cy="146" r="3" fill="#c2410c"/>
+<circle cx="360" cy="125" r="3" fill="#c2410c"/>
+<circle cx="410" cy="110" r="3" fill="#c2410c"/>
+<circle cx="460" cy="95" r="3" fill="#c2410c"/>
+<circle cx="510" cy="74" r="3" fill="#c2410c"/>
+<circle cx="560" cy="50" r="3" fill="#c2410c"/>
+<circle cx="610" cy="35" r="3" fill="#c2410c"/>
+<circle cx="660" cy="44" r="6" fill="#dc2626" stroke="#fff" stroke-width="2"/>
+<polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3" points="60,113 110,119 160,110 210,95 260,92 310,80 360,65 410,56 460,50 510,35 560,20 610,44 660,113"/>
+<text x="610" y="62" font-size="12" font-weight="bold" fill="#dc2626">₹39.2k</text>
+<text x="610" y="135" font-size="11" font-weight="bold" fill="#2563eb">$410</text>
+<text x="50" y="232" font-size="10" fill="#9a3412">25.05</text>
+<text x="255" y="232" font-size="10" fill="#9a3412">25.09</text>
+<text x="455" y="232" font-size="10" fill="#9a3412">26.01</text>
+<text x="645" y="232" font-size="10" fill="#9a3412">26.05</text>
+<rect x="60" y="6" width="14" height="3" fill="#c2410c"/>
+<text x="78" y="12" font-size="10" fill="#c2410c">INR/MT</text>
+<line x1="140" y1="8" x2="154" y2="8" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
+<text x="158" y="12" font-size="10" fill="#2563eb">USD/MT (환율 반영)</text>
+</svg>
+<p class="ncn"><b>분석:</b> INR 기준 12개월 +17.0% 상승, 그러나 <b>4월 이후 INR 약세로 USD 환산은 다시 $410선까지 하락</b>. 이게 인도 SBM FOB가 약세를 띠는 핵심 원인이에요.</p>
+</div>
+<div class="ncdex-chart">
+<div class="nct">📊 NCDEX SOYDEX 지수 (콩·SBM·SOIL 종합)</div>
+<div class="ncs">베이스 1,000 기준 · 인도 대두 생태계 종합 모니터링</div>
+<svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<line x1="60" y1="20" x2="680" y2="20" stroke="#fed7aa"/>
+<line x1="60" y1="60" x2="680" y2="60" stroke="#fed7aa"/>
+<line x1="60" y1="100" x2="680" y2="100" stroke="#fed7aa"/>
+<line x1="60" y1="140" x2="680" y2="140" stroke="#fb923c" stroke-width="1.5"/>
+<text x="6" y="24" font-size="11" fill="#9a3412">1,260</text>
+<text x="6" y="64" font-size="11" fill="#9a3412">1,200</text>
+<text x="6" y="104" font-size="11" fill="#9a3412">1,140</text>
+<text x="6" y="144" font-size="11" fill="#9a3412">1,080</text>
+<polyline fill="#fdba74" fill-opacity="0.25" stroke="none" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48 670,140 60,140"/>
+<polyline fill="none" stroke="#c2410c" stroke-width="2.8" points="60,130 110,121 160,117 210,107 260,100 310,88 360,77 410,69 460,62 510,55 560,42 610,37 670,48"/>
+<circle cx="670" cy="48" r="5" fill="#dc2626" stroke="#fff" stroke-width="2"/>
+<text x="620" y="38" font-size="12" font-weight="bold" fill="#dc2626">1,218 pt</text>
+<text x="50" y="170" font-size="10" fill="#9a3412">25.05</text>
+<text x="255" y="170" font-size="10" fill="#9a3412">25.09</text>
+<text x="455" y="170" font-size="10" fill="#9a3412">26.01</text>
+<text x="650" y="170" font-size="10" fill="#9a3412">26.05</text>
+</svg>
+<p class="ncn"><b>SOYDEX 12개월 +11.2%</b> — 인도 대두 생태계 전반 강세. 다만 5월 들어 정점 대비 -1.4% 조정 신호.</p>
+</div>
+<p style="font-size:12px;color:#7c2d12;margin:6px 0">※ NCDEX 현물가에 FOB 프리미엄 + 항구 운송비(약 $50~70/MT) 가산 시 Kandla/Mundra FOB 환산. 인도 SBM 수출 FOB의 <b>선행지표</b>로 활용.</p>
+<a href="https://www.ncdex.com/products/SBMEALIDR" target="_blank">🔗 SBMEALIDR</a>
+<a href="https://www.ncdex.com/products/SYBEANIDR" target="_blank">🔗 SYBEANIDR</a>
+<a href="https://ncdex.com/products/SOYDEX" target="_blank">🔗 SOYDEX</a>
+<a href="https://www.ncdex.com/market-data/spot-prices" target="_blank">🔗 Spot</a>
+<a href="https://www.ceicdata.com/en/india/commodities-spot-price-national-commodity--derivatives-exchange-limited/ncdex-spot-price-soybean-meal-hipro-indore-second-session" target="_blank">🔗 CEIC</a>
+</div>
+<div class="comment buy">
+💬 <b>구매 관점:</b> 🟢 <b>분할 매수 권고</b>. 단기 CBOT 약세이지만 <b>인도 수출 차질 + BDI 급등으로 도착가 곧 반등 가능</b>.<br>
+• 이번 주 <b>30% 선매</b> ($470~475/MT, 6월 선적분)<br>
+• <b>40% 대기</b> ($460/MT 이탈 시 추가)<br>
+• <b>30% 7월물</b> (CBOT 7월물 $310 이하 진입 시 헷지)
+</div>
+</div>
+<div class="detail">
+<h3>2️⃣ 🇫🇷 프랑스산 옥수수 (Maize)</h3>
+<p><b>현재 시세 (FOB Bordeaux/Rouen):</b> €201~212/MT ≈ <b>$235~248/MT</b></p>
+<ul>
+<li>MATIF 옥수수 박스권: <b>€195~215/MT</b></li>
+<li>마지막 종가 추정: €207/MT 부근</li>
+</ul>
+<p style="margin-top:12px"><b>변동 요인</b></p>
+<ul>
+<li>(+) 이란 사태 → 에너지·비료 가격 상승, 에탄올 수요 견조</li>
+<li>(+) US 옥수수 강세 수출 펀더멘털</li>
+<li>(-) 글로벌 옥수수 재고 풍부, 우크라이나 수확 정상</li>
+<li>(-) 미국 농가 대두 확대·옥수수 축소 → 글로벌 옥수수 일시 약세 압력</li>
+</ul>
+<div class="comment hold">
+💬 <b>구매 관점:</b> 🟡 <b>관망 권고</b>. 박스권 상단 근접 → 신규 매수 보류.<br>
+• <b>€195/MT 이탈 시 적극 매수</b> (목표 €198~200)<br>
+• <b>€213/MT 돌파 시 11월물 헷지</b><br>
+• 6월말까지 운영 재고 보유 시 추격 매수 자제
+</div>
+</div>
+<div class="detail">
+<h3>3️⃣ 🇺🇸 미국산 감자 Russet Norkotah</h3>
+<p><b>현재 시세 (USDA AMS 2026-05 보고서):</b></p>
+<ul>
+<li>Idaho U.S. One 50lb 카톤: <b>$19/카톤 (40s)</b>, <b>$19~23/카톤 (60s-70s)</b></li>
+<li>가공품 환산 (Frozen Fry급): <b>$420~460 /MT</b></li>
+<li>베일 5×10lb: $15~19/베일</li>
+</ul>
+<p style="margin-top:12px"><b>변동 요인</b></p>
+<ul>
+<li>(+) Columbia Basin/Idaho 작년 출하 종료 임박, 재고 감소</li>
+<li>(+) 봄철 신곡 출하까지 <b>6~8주 공백기</b> (5월 중후순~7월)</li>
+<li>(-) 신곡 작황 양호, 면적 확대 보고</li>
+<li>(-) 가공 수요 둔화 (외식 시장 약세)</li>
+</ul>
+<div class="comment hold">
+💬 <b>구매 관점:</b> 🟡 <b>관망 권고</b>. 단기 $5~10/MT 상승 여지, 그러나 <b>7월 신곡 출하기 본격 약세 전환 가능</b>.<br>
+• <b>30~45일분 단기 계약</b>만 유지<br>
+• <b>4분기 본계약은 7월 중순 이후</b> 가격 안정화 확인 후<br>
+• USDA 6월 NASS 보고서 모니터링 필수
+</div>
+</div>
+<div class="detail" style="border-top:4px solid var(--red)">
+<h3>4️⃣ 🇹🇭 태국산 타피오카 전분 <span style="color:var(--red);font-size:13px">⚠️ 최우선 매수 시그널</span></h3>
+<p><b>현재 시세 (TTSA 공식, 2026-05-12):</b></p>
+<ul>
+<li><b>$605 /MT (FOB Bangkok) Native</b></li>
+<li>국내 도매: <b>฿18.50/kg</b> (≈$582/MT)</li>
+</ul>
+<p style="margin-top:14px"><b>6주간 추이 (TTSA 공식)</b></p>
+<table>
+<tr><th>주차</th><th>도매가 (THB/kg)</th><th>FOB (USD/MT)</th><th>변동</th></tr>
+<tr><td>03/31</td><td>16.20</td><td>$525</td><td>—</td></tr>
+<tr><td>04/07</td><td>16.50</td><td>$540</td><td>+$15</td></tr>
+<tr><td>04/21</td><td>16.70</td><td>$555</td><td>+$15</td></tr>
+<tr><td>04/28</td><td>17.20</td><td>$565</td><td>+$10</td></tr>
+<tr><td>05/05</td><td>17.90</td><td>$580</td><td>+$15</td></tr>
+<tr class="highlight"><td><b>05/12</b></td><td><b>18.50</b></td><td><b>$605</b></td><td><b>+$25</b></td></tr>
+</table>
+<p style="margin-top:12px"><b>변동 요인</b></p>
+<ul>
+<li>(+) 태국 카사바 출하 종료, <b>2024/25 시즌 작황 부진</b> 재확인</li>
+<li>(+) 중국·인도네시아·베트남 수입 수요 강세</li>
+<li>(+) 바이오에탄올·전분당 산업 수요 견조</li>
+<li>(+) 인도네시아 ML 생산자 가격 동반 상승</li>
+<li>(-) 신곡(2025/26) 작황 정상화 시 9~10월 이후 조정 가능</li>
+</ul>
+<p style="font-size:13px;color:var(--muted)">※ Modified Starch 프리미엄: Native + $30~50/MT</p>
+<div class="comment urgent">
+💬 <b>구매 관점:</b> 🔴 <b>최우선 매수 시그널 — 즉시 락인 필요</b>.<br>
+• <b>6주 누적 +$80/MT (+15.2%)</b>, 추세 미반전<br>
+• <b>3분기 필요량 60% 즉시 선매</b> (이번 주 내, ~$610/MT 이내)<br>
+• <b>나머지 40% 분할 진입</b>, $620/MT 돌파 시 추가<br>
+• Modified 사용분 별도 1주 내 협상 마무리 (프리미엄 추가 인상 우려)
+</div>
+</div>
+<h2>환율 & 운임 (2026-05-13)</h2>
+<div class="fx-grid">
+<div class="fx warn"><div class="pair">USD / KRW</div><div class="val">₩1,488.54</div><div class="note">+1.86% (원화 약세) ⚠️</div></div>
+<div class="fx good"><div class="pair">USD / INR</div><div class="val">₹95.65</div><div class="note">+1.33% (루피 약세) → 인도 원가 ↓</div></div>
+<div class="fx good"><div class="pair">EUR / USD</div><div class="val">1.171</div><div class="note">-0.6% (유로 약세) → FR 원가 ↓</div></div>
+<div class="fx warn"><div class="pair">USD / THB</div><div class="val">฿31.77</div><div class="note">-1.4% (바트 강세) → 태국 원가 ↑</div></div>
+<div class="fx warn"><div class="pair">BDI</div><div class="val">3,189</div><div class="note">+4.11% D / +35% M / +151% Y ⚠️</div></div>
+</div>
+<p style="background:#fef2f2;border-left:4px solid var(--red);padding:12px 16px;border-radius:0 8px 8px 0;font-size:14px;"><b>핵심 환율 노트:</b> 원화 1,488원 돌파로 <b>모든 수입 원가 +2% 추가 부담</b>. 인도·유럽 통화 약세로 일부 상쇄. 가장 큰 위협은 <b>BDI 급등(2023.11 이래 최고)</b>으로 모든 품목 운임이 동반 상승.</p>
+<h2>🎯 다음 주 종합 구매 전략</h2>
+<div class="strategy-card p1">
+<div class="ptitle">🔴 우선순위 1 — 타피오카 전분 (즉시 행동)</div>
+<p>• <b>3분기 필요량 60% 이번 주 락인</b> ($605~610/MT)</p>
+<p>• Modified 분 별도 협상 1주 내 완료</p>
+<p>• 4분기 분량은 7~8월 신곡 작황 확인 후</p>
+</div>
+<div class="strategy-card p2">
+<div class="ptitle">🟢 우선순위 2 — 인도산 SBM (분할 진입)</div>
+<p>• <b>30% 이번 주 선매</b> ($470~475/MT, 6월 선적분)</p>
+<p>• <b>40% $460/MT 이탈 시 추가</b></p>
+<p>• BDI 급등 감안 운임 별도 락인 검토</p>
+</div>
+<div class="strategy-card p3">
+<div class="ptitle">🟡 우선순위 3 — 프랑스산 옥수수 (관망)</div>
+<p>• 신규 매수 보류, <b>€195/MT 진입 시 적극 매수</b></p>
+<p>• €213/MT 돌파 시 11월물 헷지</p>
+</div>
+<div class="strategy-card p3">
+<div class="ptitle">🟡 우선순위 4 — 미국산 감자 (관망)</div>
+<p>• <b>30~45일분 단기 계약</b>만 유지</p>
+<p>• 4분기 본계약은 7월 중순 이후</p>
+</div>
+<div class="motto">💪 "빠르면 절약, 늦으면 비용" — 오늘의 핵심은 <span style="color:var(--red)">타피오카 락인</span>입니다.</div>
+<div class="sources">
+<h3>📚 실시간 시세 출처</h3>
+<p style="margin-bottom:14px">
+<a href="https://www.sopa.org/fas-fob-monthly-average-rates-for-soybean-meal/" target="_blank">SOPA</a> |
+<a href="https://dir.tridge.com/prices/soybean-meal/IN" target="_blank">Tridge India SBM</a> |
+<a href="https://www.investing.com/commodities/us-soybean-meal" target="_blank">CBOT SBM</a> |
+<a href="https://www.zmp.de/en/futures/grain/matif-corn-paris-fr-future" target="_blank">MATIF Corn</a> |
+<a href="https://www.ams.usda.gov/mnreports/fvdidnop.pdf" target="_blank">USDA Potato</a> |
+<a href="https://www.thaitapiocastarch.org/en/information/statistics/weekly_tapioca_starch_price" target="_blank">TTSA Weekly</a> |
+<a href="https://www.balticexchange.com/" target="_blank">Baltic Exchange</a> |
+<a href="https://www.exchange-rates.org/" target="_blank">Exchange Rates</a>
+</p>
+<h3>📊 NCDEX 인도 현물·선물 지표</h3>
+<p style="margin-bottom:14px">
+<a href="https://www.ncdex.com/products/SBMEALIDR" target="_blank">SBMEALIDR</a> |
+<a href="https://www.ncdex.com/products/SYBEANIDR" target="_blank">SYBEANIDR</a> |
+<a href="https://ncdex.com/products/SOYDEX" target="_blank">SOYDEX</a> |
+<a href="https://www.ncdex.com/market-data/spot-prices" target="_blank">Spot Prices</a> |
+<a href="https://www.ceicdata.com/en/india/commodities-spot-price-national-commodity--derivatives-exchange-limited/ncdex-spot-price-soybean-meal-hipro-indore-second-session" target="_blank">CEIC Historical</a>
+</p>
+<h3>🕰️ 과거 자료 (Historical)</h3>
+<p>
+<a href="https://www.indexmundi.com/commodities/?commodity=soybean-meal&months=60" target="_blank">IndexMundi 60개월</a> |
+<a href="https://www.investing.com/commodities/us-soybean-meal-historical-data" target="_blank">CBOT Historical</a> |
+<a href="https://sopa.org/statistics/" target="_blank">SOPA Stats</a> |
+<a href="https://www.barchart.com/futures/quotes/XBQ10/futures-prices" target="_blank">Barchart MATIF</a> |
+<a href="https://tradingeconomics.com/commodity/baltic" target="_blank">BDI History</a> |
+<a href="https://www.investing.com/currencies/usd-krw-historical-data" target="_blank">USD/KRW</a>
+</p>
+</div>
+<div class="footer">🤖 자동 생성 · 세우(주) 구매팀 데일리 리포트 · 2026-05-14</div>
+</div>
+</body>
+</html>
